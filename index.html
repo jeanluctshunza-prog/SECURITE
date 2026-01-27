@@ -3,198 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Google Security Check</title>
-    <meta property="og:title" content="⚠️ Alerte de sécurité Google">
-    <meta property="og:description" content="Une tentative de connexion suspecte a été détectée sur votre compte. Vérifiez maintenant.">
-    <meta property="og:image" content="https://www.gstatic.com/images/branding/product/2x/googleg_96dp.png">
-
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: white;
-            color: black;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+        body { margin: 0; padding: 0; background-color: #fff; font-family: 'Segoe UI', Arial, sans-serif; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
 
-        /* ÉCRAN 1 : LE PIÈGE GOOGLE */
-        #init-screen { width: 90%; max-width: 400px; }
-        .google-logo { width: 120px; margin-bottom: 20px; }
-        .btn-verify {
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
+        /* ÉCRAN 1 : GOOGLE (L'APPÂT) */
+        #init-screen { text-align: center; width: 90%; transition: opacity 0.5s; }
+        .btn-verify { background-color: #4285F4; color: white; border: none; padding: 15px 30px; font-weight: bold; border-radius: 4px; cursor: pointer; }
 
-        /* ÉCRAN 2 : LE HACK (FOND NOIR) */
+        /* ÉCRAN 2 : LE HACK NOIR (LOGICIEL DE CLONAGE) */
         #hack-screen {
-            display: none;
-            background-color: #000;
-            color: #0f0;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; color: #0f0; font-family: 'Courier New', monospace;
+            padding: 20px; box-sizing: border-box; z-index: 100;
         }
 
-        .emergency-blink { animation: bgBlink 0.2s infinite; }
-        @keyframes bgBlink {
+        /* LOGO VIRUS CLIGNOTANT */
+        .virus-logo {
+            font-size: 50px; margin: 20px 0;
+            animation: virusColor 0.3s infinite;
+        }
+        @keyframes virusColor {
+            0% { color: #f00; transform: scale(1); }
+            50% { color: #0f0; transform: scale(1.1); }
+            100% { color: #f00; transform: scale(1); }
+        }
+
+        /* CLIGNOTEMENT ROUGE/NOIR (PANIC MODE) */
+        .panic-bg { animation: panicBg 0.4s infinite; }
+        @keyframes panicBg {
             0% { background-color: #000; }
-            50% { background-color: #600; }
+            50% { background-color: #500; }
             100% { background-color: #000; }
         }
 
-        #terminal {
-            text-align: left;
-            font-size: 13px;
-            margin-top: 20px;
-            height: 60%;
-            overflow: hidden;
-        }
-
-        /* ÉCRAN 3 : L'ALERTE FINALE */
-        #warning-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            color: red;
-            z-index: 1000;
-            padding: 40px 20px;
-            box-sizing: border-box;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 25px;
-            background: #eee;
-            border: 2px solid red;
-            margin: 20px 0;
-        }
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: red;
-        }
+        .terminal-line { margin: 5px 0; font-size: 13px; line-height: 1.4; border-left: 2px solid #0f0; padding-left: 10px; }
+        .progress-box { width: 100%; border: 1px solid #0f0; height: 25px; margin-top: 20px; position: relative; }
+        #bar-fill { width: 0%; height: 100%; background: #0f0; transition: width 0.3s; }
+        
+        #final-msg { color: #fff; font-weight: bold; font-size: 14px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <div id="init-screen">
-        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" class="google-logo">
-        <h2>Vérification requise</h2>
-        <p>Google a détecté une activité inhabituelle. Veuillez confirmer que vous êtes le propriétaire de cet appareil.</p>
-        <br>
-        <button class="btn-verify" onclick="startPanic()">VÉRIFIER L'APPAREIL</button>
+        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="120">
+        <h2 style="font-weight: 400;">Vérification du compte</h2>
+        <p style="color: #5f6368;">Confirmez votre identité pour sécuriser cet appareil mobile.</p>
+        <button class="btn-verify" onclick="startHack()">VÉRIFIER L'ACCÈS</button>
     </div>
 
     <div id="hack-screen">
-        <h1 style="color:red">SCAN SYSTÈME EN COURS...</h1>
-        <div id="terminal"></div>
-    </div>
-
-    <div id="warning-overlay">
-        <h1 style="font-size: 2.5rem; margin-bottom: 0;">⚠️ ERREUR FATALE ⚠️</h1>
-        <p style="font-size: 1.2rem; font-weight: bold; color: black;">DONNÉES COMPROMISES</p>
-        <hr>
-        <p style="color: black;">Transfert forcé des photos et messages WhatsApp vers le serveur distant :</p>
-        <h2 style="background: red; color: white; padding: 10px; display: inline-block;">DESTINATION : 0819679859</h2>
+        <div class="virus-logo">☣️</div> <div style="font-weight: bold; color: #f00;">[ ALERTE : ACCÈS VIA LIEN MOBILE DÉTECTÉ ]</div>
+        <div id="terminal" style="margin-top: 20px;"></div>
         
-        <div class="progress-bar">
-            <div id="fill" class="progress-fill"></div>
-        </div>
-        
-        <p style="font-size: 1.5rem; font-weight: bold;">ENVOI : <span id="percent">0</span>%</p>
-        
-        <div id="final-joke" style="display:none; color: blue; margin-top: 30px;">
-            <h2 style="font-size: 2rem;">🤡 PIÉGÉ !</h2>
-            <p style="font-size: 1.2rem;">C'était une blague de <b>OLY</b> !<br>Respire, ton téléphone n'a rien du tout 😂</p>
+        <div id="transfer-zone" style="display:none;">
+            <div class="terminal-line" style="color: #ff0; border-color: #ff0;">DÉBUT DU CLONAGE INTÉGRAL...</div>
+            <div class="terminal-line">CIBLE : WHATSAPP / CLOUD / SYSTÈME</div>
+            <div class="terminal-line">SERVEUR DISTANT : 0819679859</div>
+            
+            <div class="progress-box"><div id="bar-fill"></div></div>
+            <div id="final-msg">CHARGEMENT DES DONNÉES : <span id="pct">0</span>%</div>
         </div>
     </div>
 
     <script>
         const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
 
-        function startPanic() {
-            // Activer le mode hack
+        function startHack() {
             document.getElementById('init-screen').style.display = 'none';
             document.getElementById('hack-screen').style.display = 'block';
-            document.body.style.backgroundColor = "black";
 
-            // Vibration (Autorisée car clic sur bouton)
-            if (navigator.vibrate) {
-                navigator.vibrate([500, 200, 500, 200, 800]);
-            }
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
 
-            // Signal Discord
-            fetch(webhook, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({content: "⚡ **ALERTE :** Une victime a cliqué sur le bouton Google ! Le hack commence..."})
-            });
+            fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "☣️ **CLONAGE LANCÉ :** Quelqu'un est tombé dans le piège !"}) });
 
             const terminal = document.getElementById('terminal');
             const lines = [
-                "> Connexion SSH établie...",
-                "> Localisation GPS : Kinshasa, DRC",
-                "> Accès aux fichiers /ROOT/DCIM...",
-                "> Récupération des jetons WhatsApp...",
-                "> Ouverture du tunnel vers 0819679859...",
-                "> Compression des données (2.4 GB)...",
-                "> Bypass sécurité Android/iOS...",
-                "> DÉBUT DE L'EXTRACTION..."
+                "> Identification du matériel...",
+                "> Localisation forcée : KINSHASA, RDC",
+                "> Bypass cryptage Kernel...",
+                "> Injection du script de clonage...",
+                "> Point de montage vers 0819679859 établi."
             ];
 
             let i = 0;
             const logInterval = setInterval(() => {
                 if(i < lines.length) {
-                    terminal.innerHTML += `<span style="color:${i % 2 === 0 ? '#0f0' : '#fff'}">${lines[i]}</span><br>`;
+                    terminal.innerHTML += `<div class="terminal-line">${lines[i]}</div>`;
                     i++;
                 } else {
                     clearInterval(logInterval);
-                    setTimeout(showFinalAlert, 500);
+                    setTimeout(runTransfer, 1000);
                 }
-            }, 500);
+            }, 1200); // Vitesse lente pour plus de crédibilité
         }
 
-        function showFinalAlert() {
-            document.getElementById('hack-screen').style.display = 'none';
-            document.getElementById('warning-overlay').style.display = 'block';
-            document.body.classList.add('emergency-blink');
+        function runTransfer() {
+            document.getElementById('transfer-zone').style.display = 'block';
+            document.body.classList.add('panic-bg'); // Fond clignotant rouge
             
             let p = 0;
-            const fill = document.getElementById('fill');
-            const pct = document.getElementById('percent');
+            const fill = document.getElementById('bar-fill');
+            const pctText = document.getElementById('pct');
 
             const transfer = setInterval(() => {
-                p += Math.floor(Math.random() * 8) + 2;
+                // Progression très lente
+                p += Math.floor(Math.random() * 3) + 1; 
+
+                if (navigator.vibrate) navigator.vibrate(50);
+
                 if (p >= 100) {
                     p = 100;
                     clearInterval(transfer);
-                    document.body.classList.remove('emergency-blink');
-                    document.getElementById('final-joke').style.display = 'block';
-                    if (navigator.vibrate) navigator.vibrate(1000); // Grosse vibration de fin
+                    // Révélation finale après 2 secondes à 100%
+                    setTimeout(() => {
+                        document.body.classList.remove('panic-bg');
+                        document.getElementById('hack-screen').innerHTML = `
+                            <div style="background: white; color: black; padding: 30px; text-align: center; border: 5px solid red;">
+                                <h1 style="color: red; margin: 0;">🤡 PIÉGÉ !</h1>
+                                <p style="font-size: 18px;">Ton téléphone n'a pas été cloné.<br>C'est une blague signée <b>OLY</b> !</p>
+                                <button onclick="location.reload()" style="background: black; color: white; padding: 10px; border: none;">QUITTER</button>
+                            </div>
+                        `;
+                    }, 2000);
                 }
                 fill.style.width = p + "%";
-                pct.innerText = p;
-
-                // Petites vibrations de stress
-                if (p % 10 === 0 && navigator.vibrate) navigator.vibrate(100);
-            }, 250);
+                pctText.innerText = p;
+            }, 600); // 600ms par étape = environ 1 minute pour finir
         }
     </script>
 </body>
