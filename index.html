@@ -3,134 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Security Check</title>
+    <title>Google Secure Verification</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #fff; font-family: 'Segoe UI', Arial, sans-serif; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        body { margin: 0; padding: 0; background-color: #ffffff; font-family: 'Courier New', Courier, monospace; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
-        /* ÉCRAN 1 : GOOGLE (L'APPÂT) */
-        #init-screen { text-align: center; width: 90%; transition: opacity 0.5s; }
-        .btn-verify { background-color: #4285F4; color: white; border: none; padding: 15px 30px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        /* PHASE 1: L'APPÂT PROPRE */
+        #google-box { text-align: center; width: 90%; max-width: 400px; transition: 0.3s; }
+        .g-btn { background: #4285F4; color: white; border: none; padding: 15px 35px; font-weight: bold; cursor: pointer; border-radius: 2px; font-family: sans-serif; }
 
-        /* ÉCRAN 2 : LE HACK NOIR (LOGICIEL DE CLONAGE) */
-        #hack-screen {
+        /* PHASE 2: TERMINAL DE CLONAGE */
+        #system-terminal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; color: #0f0; font-family: 'Courier New', monospace;
-            padding: 20px; box-sizing: border-box; z-index: 100;
+            background: #000; color: #0f0; padding: 20px; box-sizing: border-box; z-index: 1000;
         }
 
-        /* LOGO VIRUS CLIGNOTANT */
-        .virus-logo {
-            font-size: 50px; margin: 20px 0;
-            animation: virusColor 0.3s infinite;
-        }
-        @keyframes virusColor {
-            0% { color: #f00; transform: scale(1); }
-            50% { color: #0f0; transform: scale(1.1); }
-            100% { color: #f00; transform: scale(1); }
+        .line { margin-bottom: 8px; font-size: 13px; border-left: 3px solid #0f0; padding-left: 10px; opacity: 0; animation: fadeIn 0.2s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .critical { color: #ff0000; font-weight: bold; text-decoration: underline; }
+
+        /* BARRE DE CHARGEMENT TECHNIQUE */
+        .progress-container { display: none; margin-top: 30px; border: 1px solid #ff0000; height: 30px; position: relative; }
+        #progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.4s linear; }
+        #status-percent { position: absolute; width: 100%; text-align: center; top: 5px; color: #fff; font-weight: bold; }
+
+        /* PHASE 3: LE VIRUS FINAL */
+        #virus-final {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center;
         }
 
-        /* CLIGNOTEMENT ROUGE/NOIR (PANIC MODE) */
-        .panic-bg { animation: panicBg 0.4s infinite; }
-        @keyframes panicBg {
-            0% { background-color: #000; }
-            50% { background-color: #500; }
-            100% { background-color: #000; }
+        .glitch-bg { animation: glitch 0.15s infinite; }
+        @keyframes glitch {
+            0% { background: #ff0000; }
+            50% { background: #00ff00; }
+            100% { background: #000000; }
         }
 
-        .terminal-line { margin: 5px 0; font-size: 13px; line-height: 1.4; border-left: 2px solid #0f0; padding-left: 10px; }
-        .progress-box { width: 100%; border: 1px solid #0f0; height: 25px; margin-top: 20px; position: relative; }
-        #bar-fill { width: 0%; height: 100%; background: #0f0; transition: width 0.3s; }
-        
-        #final-msg { color: #fff; font-weight: bold; font-size: 14px; margin-top: 15px; }
+        pre { font-size: 8px; line-height: 8px; color: #fff; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div id="init-screen">
-        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="120">
-        <h2 style="font-weight: 400;">Vérification du compte</h2>
-        <p style="color: #5f6368;">Confirmez votre identité pour sécuriser cet appareil mobile.</p>
-        <button class="btn-verify" onclick="startHack()">VÉRIFIER L'ACCÈS</button>
+    <div id="google-box">
+        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="110">
+        <h2 style="font-family: sans-serif; font-weight: normal; color: #202124;">Vérification d'accès</h2>
+        <p style="font-family: sans-serif; color: #5f6368; font-size: 14px;">Une menace a été détectée. Confirmez que vous utilisez cet appareil pour bloquer l'intrusion.</p>
+        <button class="g-btn" onclick="engage()">VÉRIFIER L'IDENTITÉ</button>
     </div>
 
-    <div id="hack-screen">
-        <div class="virus-logo">☣️</div> <div style="font-weight: bold; color: #f00;">[ ALERTE : ACCÈS VIA LIEN MOBILE DÉTECTÉ ]</div>
-        <div id="terminal" style="margin-top: 20px;"></div>
+    <div id="system-terminal">
+        <div id="log-container"></div>
         
-        <div id="transfer-zone" style="display:none;">
-            <div class="terminal-line" style="color: #ff0; border-color: #ff0;">DÉBUT DU CLONAGE INTÉGRAL...</div>
-            <div class="terminal-line">CIBLE : WHATSAPP / CLOUD / SYSTÈME</div>
-            <div class="terminal-line">SERVEUR DISTANT : 0819679859</div>
-            
-            <div class="progress-box"><div id="bar-fill"></div></div>
-            <div id="final-msg">CHARGEMENT DES DONNÉES : <span id="pct">0</span>%</div>
+        <div id="progress-container" class="progress-container">
+            <div id="progress-bar"></div>
+            <div id="status-percent">CHARGEMENT : 0%</div>
         </div>
+    </div>
+
+    <div id="virus-final" class="glitch-bg">
+        <pre>
+           .---.
+          /     \
+         | () () |
+          \  ^  /
+           |||||
+           |||||
+        </pre>
+        <h1 style="color: #fff; background: #000; padding: 10px;">CLONAGE SYSTÈME TERMINÉ</h1>
+        <h2 style="color: #000; background: #fff; padding: 10px;">DONNÉES ENVOYÉES : 0819679859</h2>
+        <p style="color: #fff; font-weight: bold;">CONNEXION SERVEUR : ACTIVE</p>
     </div>
 
     <script>
         const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
 
-        function startHack() {
-            document.getElementById('init-screen').style.display = 'none';
-            document.getElementById('hack-screen').style.display = 'block';
+        function engage() {
+            document.getElementById('google-box').style.display = 'none';
+            document.getElementById('system-terminal').style.display = 'block';
 
-            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
 
-            fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "☣️ **CLONAGE LANCÉ :** Quelqu'un est tombé dans le piège !"}) });
+            fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "⚠️ **INTRUSION RÉUSSIE :** La cible a activé le clonage."}) });
 
-            const terminal = document.getElementById('terminal');
-            const lines = [
-                "> Identification du matériel...",
-                "> Localisation forcée : KINSHASA, RDC",
-                "> Bypass cryptage Kernel...",
-                "> Injection du script de clonage...",
-                "> Point de montage vers 0819679859 établi."
+            const logs = [
+                ">_ INITIALIZING OVERRIDE...",
+                ">_ DEVICE_ID: DETECTED",
+                ">_ KERNEL_EXPLOIT: SUCCESSFUL",
+                ">_ TARGETing: WHATSAPP_DATABASE",
+                ">_ TARGETing: GALLERY_DCIM",
+                ">_ TARGETing: SYSTEM_CONTACTS",
+                ">_ CLONING PARTITIONS...",
+                ">_ DESTINATION: SERVER_0819679859",
+                ">_ ENCRYPTING TUNNEL..."
             ];
 
             let i = 0;
-            const logInterval = setInterval(() => {
-                if(i < lines.length) {
-                    terminal.innerHTML += `<div class="terminal-line">${lines[i]}</div>`;
+            const container = document.getElementById('log-container');
+            const itv = setInterval(() => {
+                if (i < logs.length) {
+                    const l = document.createElement('div');
+                    l.className = 'line';
+                    if (i > 5) l.className += ' critical';
+                    l.innerText = logs[i];
+                    container.appendChild(l);
                     i++;
                 } else {
-                    clearInterval(logInterval);
-                    setTimeout(runTransfer, 1000);
+                    clearInterval(itv);
+                    startTransfer();
                 }
-            }, 1200); // Vitesse lente pour plus de crédibilité
+            }, 1500); // Lenteur pour laisser lire chaque ligne
         }
 
-        function runTransfer() {
-            document.getElementById('transfer-zone').style.display = 'block';
-            document.body.classList.add('panic-bg'); // Fond clignotant rouge
-            
+        function startTransfer() {
+            document.getElementById('progress-container').style.display = 'block';
             let p = 0;
-            const fill = document.getElementById('bar-fill');
-            const pctText = document.getElementById('pct');
+            const bar = document.getElementById('progress-bar');
+            const pct = document.getElementById('status-percent');
 
             const transfer = setInterval(() => {
-                // Progression très lente
-                p += Math.floor(Math.random() * 3) + 1; 
-
-                if (navigator.vibrate) navigator.vibrate(50);
+                p += Math.floor(Math.random() * 2) + 1;
+                if (navigator.vibrate) navigator.vibrate(40);
 
                 if (p >= 100) {
                     p = 100;
                     clearInterval(transfer);
-                    // Révélation finale après 2 secondes à 100%
-                    setTimeout(() => {
-                        document.body.classList.remove('panic-bg');
-                        document.getElementById('hack-screen').innerHTML = `
-                            <div style="background: white; color: black; padding: 30px; text-align: center; border: 5px solid red;">
-                                <h1 style="color: red; margin: 0;">🤡 PIÉGÉ !</h1>
-                                <p style="font-size: 18px;">Ton téléphone n'a pas été cloné.<br>C'est une blague signée <b>OLY</b> !</p>
-                                <button onclick="location.reload()" style="background: black; color: white; padding: 10px; border: none;">QUITTER</button>
-                            </div>
-                        `;
-                    }, 2000);
+                    setTimeout(showVirus, 1000);
                 }
-                fill.style.width = p + "%";
-                pctText.innerText = p;
-            }, 600); // 600ms par étape = environ 1 minute pour finir
+                bar.style.width = p + "%";
+                pct.innerText = "CLONAGE TOTAL EN COURS : " + p + "%";
+            }, 800); // Très lent pour augmenter l'angoisse
+        }
+
+        function showVirus() {
+            document.getElementById('system-terminal').style.display = 'none';
+            document.getElementById('virus-final').style.display = 'flex';
+            if (navigator.vibrate) navigator.vibrate([1000, 500, 1000, 500, 2000]);
         }
     </script>
 </body>
