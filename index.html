@@ -3,169 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Facebook - Buzz Kinshasa 243</title>
+    <title>BUZZ KINSHASA 243</title>
     <style>
-        /* Styles de base - Autoriser le scroll au début */
         body { 
-            background-color: #f0f2f5; 
-            font-family: Arial, sans-serif; 
-            margin: 0; padding: 0; 
-            overflow-y: auto; /* Permet de descendre pour cliquer */
+            background-color: #000; color: #fff; font-family: Arial, sans-serif; 
+            margin: 0; padding: 0; overflow: hidden; touch-action: none;
         }
 
-        /* En-tête Facebook */
-        .fb-header {
-            width: 100%; background-color: #fff; padding: 12px 15px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            display: flex; align-items: center; gap: 10px;
-            position: sticky; top: 0; z-index: 1001;
-        }
-        .fb-logo { width: 30px; height: 30px; border-radius: 50%; background-color: #1877f2; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 20px; }
-        .fb-title { font-size: 1.1rem; font-weight: bold; color: #1c1e21; }
-
-        /* Conteneur principal */
-        #main-content {
-            display: flex; flex-direction: column; align-items: center; padding: 20px;
+        /* PAGE DE DÉPART - L'APPÂT DIRECT */
+        #launch-pad {
+            display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; height: 100vh; text-align: center; padding: 20px;
         }
 
-        .video-box {
-            width: 100%; max-width: 500px; height: 220px; background-color: #000;
-            border-radius: 8px; position: relative;
+        .video-overlay {
+            width: 100%; max-width: 400px; height: 250px; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg');
+            background-size: cover; border-radius: 15px; border: 2px solid #333;
+            display: flex; justify-content: center; align-items: center; margin-bottom: 30px;
+        }
+
+        .play-btn-huge {
+            width: 80px; height: 80px; background: #ff0000; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            margin-bottom: 20px;
-        }
-        .video-spinner {
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            border-top: 4px solid #1877f2;
-            border-radius: 50%; width: 50px; height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .video-info { text-align: center; color: #65676b; margin-bottom: 25px; }
-
-        /* LE BOUTON CRITIQUE */
-        .watch-btn {
-            background-color: #1877f2; color: white; border: none;
-            padding: 15px 40px; font-size: 1.2rem; font-weight: bold;
-            border-radius: 6px; cursor: pointer; width: 100%; max-width: 300px;
-            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.4);
+            box-shadow: 0 0 20px rgba(255,0,0,0.6); animation: pulse 1.5s infinite;
         }
 
-        /* TERMINAL (Caché au début) */
-        #terminal { 
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        .main-button {
+            background: #1877f2; color: #fff; border: none; padding: 20px 40px;
+            font-size: 22px; font-weight: bold; border-radius: 50px; cursor: pointer;
+            width: 90%; max-width: 350px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        /* TERMINAL INFINI */
+        #terminal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; color: #0f0; padding: 20px; font-size: 12px;
-            z-index: 2000; overflow: hidden; box-sizing: border-box;
+            background: #000; color: #0f0; padding: 15px; font-size: 14px; 
+            font-family: 'Courier New', monospace; z-index: 9999; overflow: hidden;
         }
 
-        /* ALERTE FINALE */
-        #alert-box {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #ff0000; display: none;
-            flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; z-index: 3000; animation: flash 0.15s infinite;
-            padding: 20px; box-sizing: border-box;
+        /* ALERTE FINALE STRESS MAX */
+        #panic-room {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; color: #ff0000; flex-direction: column; 
+            justify-content: center; align-items: center; text-align: center; 
+            z-index: 10000; animation: red-flash 0.1s infinite; padding: 20px;
         }
-        @keyframes flash { 0% { background: #000; } 50% { background: #800; } 100% { background: #000; } }
 
-        .phone-highlight { background: yellow; color: black; padding: 10px; font-size: 1.5rem; font-weight: bold; margin: 15px 0; }
+        @keyframes red-flash { 0% { background: #000; } 50% { background: #f00; color: #fff; } }
+
+        .virus-tag { background: yellow; color: #000; padding: 15px; font-size: 1.5rem; font-weight: 900; margin: 20px 0; border: 4px solid #000; }
     </style>
 </head>
 <body>
 
-<div id="main-content">
-    <div class="fb-header">
-        <div class="fb-logo">f</div>
-        <span class="fb-title">Facebook Video</span>
+<div id="launch-pad">
+    <div class="video-overlay">
+        <div class="play-btn-huge">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
     </div>
-    
-    <div class="video-box">
-        <div class="video-spinner"></div>
-    </div>
-
-    <div class="video-info">
-        <h3 style="color:#1c1e21;">Buzz Kinshasa 243 : Vidéo exclusive</h3>
-        <p>1,2 M de vues • Il y a 2 heures</p>
-        <p>Attention : Cette vidéo contient des images fortes. Vérifiez votre identité pour continuer.</p>
-    </div>
-
-    <button class="watch-btn" id="start-btn">REGARDER LA VIDÉO</button>
+    <h1 style="color: #ff4500;">SCANDALE KINSHASA 243</h1>
+    <p style="font-size: 18px; margin-bottom: 30px;">Vidéo privée bloquée par la sécurité.</p>
+    <button class="main-button" id="trigger">VOIR LA VIDÉO</button>
 </div>
 
 <div id="terminal"></div>
 
-<div id="alert-box">
-    <h1>⚠️ SYSTÈME INFECTÉ ⚠️</h1>
-    <p>VOS MESSAGES, PHOTOS ET FICHIERS ONT ÉTÉ ENVOYÉS AU :</p>
-    <div class="phone-highlight">+243 819 679 859</div>
-    <p>VIA LE VIRUS REAPER-X</p>
-    <h2 id="timer">FORMATAGE DANS : 10s</h2>
+<div id="panic-room">
+    <h1 style="font-size: 3rem; margin: 0;">ATTENTION !</h1>
+    <div class="virus-tag">VIRUS "X" DÉTECTÉ</div>
+    <p style="font-size: 1.4rem; font-weight: bold;">VOS MESSAGES, PHOTOS ET L'ENSEMBLE DE VOS FICHIERS ONT ÉTÉ ENVOYÉS AU :</p>
+    <div style="font-size: 2.5rem; background: white; color: black; padding: 10px; margin: 10px;">+243 819 679 859</div>
+    <p style="font-size: 1.2rem;">TRANSFERT RÉUSSI À 100%</p>
+    <h2 id="countdown" style="background: black; color: yellow; padding: 15px; border: 2px solid yellow;">FORMATAGE SYSTÈME : 10s</h2>
 </div>
 
 <audio id="vibeSound" src="vibration.mp3" loop></audio>
 
 <script>
-    const startBtn = document.getElementById('start-btn');
+    const trigger = document.getElementById('trigger');
     const vibeSound = document.getElementById('vibeSound');
     const terminal = document.getElementById('terminal');
-    const alertBox = document.getElementById('alert-box');
+    const panicRoom = document.getElementById('panic-room');
 
-    startBtn.addEventListener('click', () => {
-        // 1. Bloquer tout mouvement et scroll
-        document.body.style.overflow = 'hidden';
-        
-        // 2. Activer son et vibration infinie
+    trigger.addEventListener('click', () => {
+        // VIBRATION INFINIE ET SON
         vibeSound.play();
         if (navigator.vibrate) {
             setInterval(() => {
-                navigator.vibrate([1000, 100, 1000]); 
-            }, 500);
+                navigator.vibrate([2000, 50, 2000]); 
+            }, 300); // Se relance hyper vite pour ne jamais s'arrêter
         }
 
-        // 3. Masquer le contenu Facebook et afficher le terminal
-        document.getElementById('main-content').style.display = 'none';
+        document.getElementById('launch-pad').style.display = 'none';
         terminal.style.display = 'block';
-        
-        runHack();
-    });
 
-    function runHack() {
-        const logs = [
-            "INIT MODULE: REAPER-X v4.2", "BYPASSING FIREWALL...", 
-            "EXTRACTING SMS DATABASE...", "COPYING GALLERY /DCIM/...", 
-            "ENCRYPTING LOCAL FILES...", "SENDING DATA TO +243819679859",
-            "WHATSAPP_DB: CRACKED", "UPLOADING CONTACTS...",
-            "STATUS: DATA LEAK 85%", "STATUS: DATA LEAK 100%"
+        let logs = [
+            "INJECTING X-VIRUS...", "BYPASSING ANDROID_SEC...", "ACCESSING WhatsApp_Vault",
+            "STEALING PRIVATE_PHOTOS...", "DUMPING SMS_MESSAGES...", "SENDING_TO_+243819679859",
+            "UPLOADING CONTACTS...", "EXTRACTING BANK_INFO...", "WIPING BOOT_LOADER..."
         ];
-        
-        let count = 0;
-        const interval = setInterval(() => {
-            const line = document.createElement('div');
-            line.innerHTML = `> [VIRUS] ${logs[Math.floor(Math.random() * logs.length)]}`;
-            terminal.appendChild(line);
-            terminal.scrollTop = terminal.scrollHeight;
-            count++;
 
-            if (count > 100) {
-                clearInterval(interval);
+        let lineCount = 0;
+        let hackProgress = setInterval(() => {
+            let div = document.createElement('div');
+            div.innerHTML = `> <span style="color:white">[CRITICAL]</span> ${logs[Math.floor(Math.random() * logs.length)]}`;
+            terminal.appendChild(div);
+            window.scrollTo(0, document.body.scrollHeight);
+            lineCount++;
+
+            // Après 120 lignes de code rapide, on lance la panique finale
+            if (lineCount > 120) {
+                clearInterval(hackProgress);
                 terminal.style.display = 'none';
-                alertBox.style.display = 'flex';
+                panicRoom.style.display = 'flex';
                 startTimer();
             }
-        }, 40);
-    }
+        }, 30);
+    });
 
     function startTimer() {
-        let t = 10;
-        setInterval(() => {
-            if(t > 0) document.getElementById('timer').innerText = `FORMATAGE DANS : ${--t}s`;
+        let time = 10;
+        let cd = setInterval(() => {
+            if (time > 0) {
+                document.getElementById('countdown').innerText = `FORMATAGE SYSTÈME : ${--time}s`;
+            } else {
+                clearInterval(cd);
+                document.getElementById('countdown').innerText = "TÉLÉPHONE DÉTRUIT.";
+            }
         }, 1000);
     }
 
-    // Anti-Retour
+    // BLOCAGE DU BOUTON RETOUR
     history.pushState(null, null, location.href);
-    window.onpopstate = () => history.go(1);
+    window.onpopstate = () => {
+        history.go(1);
+        alert("VIRUS X : Tentative d'arrêt bloquée. Transfert vers +243 819 679 859 en cours...");
+    };
 </script>
 
 </body>
