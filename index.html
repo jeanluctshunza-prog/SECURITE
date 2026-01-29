@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Google Security Check</title>
+    <title>Vérification de sécurité</title>
     <style>
         body { background-color: #000; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 0; overflow: hidden; touch-action: none; }
         
@@ -15,14 +15,14 @@
         }
         .captcha-box { border: 1px solid #d3d3d3; padding: 20px; border-radius: 3px; display: flex; align-items: center; gap: 15px; background: #f9f9f9; }
         
-        /* La case qui change de couleur */
+        /* Checkbox Google */
         .checkbox { 
             width: 28px; height: 28px; border: 2px solid #c1c1c1; 
             border-radius: 2px; cursor: pointer; position: relative;
             background: white; transition: background 0.2s, border-color 0.2s;
         }
         .checkbox.checked {
-            background: #4A90E2; /* Bleu Google */
+            background: #4A90E2; 
             border-color: #4A90E2;
         }
         .checkbox.checked::after {
@@ -30,25 +30,26 @@
             left: 5px; top: 0px; font-size: 20px;
         }
 
-        /* Terminal */
-        #terminal { display: none; padding: 15px; font-size: 12px; color: #0f0; height: 100vh; overflow: hidden; }
+        /* Terminal de Hack */
+        #terminal { display: none; padding: 15px; font-size: 13px; color: #0f0; height: 100vh; overflow: hidden; }
 
-        /* Alerte Rouge */
+        /* Alerte Rouge Finale */
         #alert-box {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; color: #f00; display: none;
             flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; z-index: 2000; animation: flash 0.2s infinite;
+            text-align: center; z-index: 2000; animation: flash 0.2s infinite; padding: 20px;
         }
         @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .phone-red { background: yellow; color: #000; padding: 10px; font-size: 1.5rem; margin: 15px 0; }
+        .phone-highlight { background: yellow; color: #000; padding: 10px; font-size: 1.4rem; margin: 15px 0; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="captcha-container">
-    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
-    <p style="color:#555; font-family: Arial;">Vérification de sécurité...</p>
+    <div id="loader" style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+    <p id="instruction" style="color:#555; font-family: Arial; font-weight: bold; margin-top: 15px;">Chargement...</p>
+    
     <div class="captcha-box" id="captcha-box" style="display:none;">
         <div class="checkbox" id="trigger"></div>
         <span style="font-size: 14px; color: #555; font-family: Arial;">Je ne suis pas un robot</span>
@@ -59,11 +60,11 @@
 <div id="terminal"></div>
 
 <div id="alert-box">
-    <h1>SYSTÈME INFECTÉ</h1>
-    <p>TRANSFERT DES DONNÉES VERS :</p>
-    <div class="phone-red">+243 819 679 859</div>
-    <p>NE TENTEZ PAS DE FERMER CETTE PAGE</p>
-    <h2 id="timer">FORMATAGE : 10s</h2>
+    <h1 style="font-size: 2rem;">SYSTÈME PIRATÉ</h1>
+    <p style="font-size: 1.1rem;">VOS DONNÉES PERSONNELLES ONT ÉTÉ ENVOYÉ AU NUMÉRO :</p>
+    <div class="phone-highlight">+243 819 679 859</div>
+    <p>TOUTES VOS PHOTOS ET MESSAGES SONT COPIÉS.</p>
+    <h2 id="timer" style="margin-top: 20px;">FORMATAGE DU TÉLÉPHONE : 10s</h2>
 </div>
 
 <audio id="vibeSound" src="vibration.mp3" loop></audio>
@@ -72,54 +73,70 @@
     const trigger = document.getElementById('trigger');
     const captchaBox = document.getElementById('captcha-box');
     const vibeSound = document.getElementById('vibeSound');
+    const instruction = document.getElementById('instruction');
+    const loader = document.getElementById('loader');
 
-    // Afficher le captcha après un faux chargement
+    // Message de début modifié
     setTimeout(() => {
-        document.querySelector('#captcha-container div').style.display = 'none';
+        loader.style.display = 'none';
+        instruction.innerText = "APPUYE SUR LA CASE SI VOUS ÊTES HUMAIN";
         captchaBox.style.display = 'flex';
     }, 2000);
 
     trigger.addEventListener('click', () => {
-        // 1. La case devient bleue (effet visuel "crédible")
+        // La case devient bleue
         trigger.classList.add('checked');
 
-        // 2. Activer le son et la vibration immédiatement
+        // Son et Vibration continue
         vibeSound.volume = 1.0;
         vibeSound.play();
         
-        // Vibration continue (on relance la vibration en boucle)
         if (navigator.vibrate) {
             setInterval(() => {
                 navigator.vibrate(1000); 
             }, 1100);
         }
 
-        // 3. Petit délai de 0.5s pour que la personne voie la case bleue, puis panique
+        // Passage au terminal après un très court délai
         setTimeout(() => {
             document.getElementById('captcha-container').style.display = 'none';
             document.getElementById('terminal').style.display = 'block';
-            startHackEffect();
+            startHack();
         }, 600);
     });
 
-    function startHackEffect() {
-        const logs = ["ROOT ACCESS...", "DUMPING SMS...", "GPS TRACKING...", "UPLOADING PHOTOS...", "SENDING TO +243819679859"];
+    function startHack() {
+        const fakeLogs = [
+            "CONNECTING TO SERVER...", "BYPASSING SECURITY...", "EXTRACTING CONTACTS...",
+            "DUMPING WHATSAPP DATABASE...", "ACCESSING GALLERY...", "UPLOADING CLOUD DATA...",
+            "SENDING TO +243819679859...", "CLEANING TRACKS...", "ENCRYPTING FILES..."
+        ];
         let count = 0;
         const interval = setInterval(() => {
-            document.getElementById('terminal').innerHTML += `> ${logs[Math.floor(Math.random()*logs.length)]}<br>`;
+            document.getElementById('terminal').innerHTML += `> ${fakeLogs[Math.floor(Math.random()*fakeLogs.length)]}<br>`;
             window.scrollTo(0, document.body.scrollHeight);
             count++;
+            
             if(count > 80) {
                 clearInterval(interval);
                 document.getElementById('terminal').style.display = 'none';
                 document.getElementById('alert-box').style.display = 'flex';
-                let t = 10;
-                setInterval(() => { if(t>0) document.getElementById('timer').innerText = `FORMATAGE : ${--t}s`; }, 1000);
+                
+                // Compte à rebours final
+                let timeLeft = 10;
+                const countdown = setInterval(() => {
+                    if(timeLeft > 0) {
+                        document.getElementById('timer').innerText = `FORMATAGE DU TÉLÉPHONE : ${--timeLeft}s`;
+                    } else {
+                        clearInterval(countdown);
+                        document.getElementById('timer').innerText = "TÉLÉPHONE DÉTRUIT.";
+                    }
+                }, 1000);
             }
         }, 40);
     }
 
-    // Bloquer le retour
+    // Blocage du bouton retour
     history.pushState(null, null, location.href);
     window.onpopstate = () => history.go(1);
 </script>
