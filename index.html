@@ -2,151 +2,91 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BUZZ KIN 243</title>
     <style>
-        * { box-sizing: border-box; }
         body, html { 
-            background-color: #000; color: #fff; font-family: sans-serif; 
-            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+            background: #000; color: #fff; margin: 0; padding: 0; 
+            width: 100%; height: 100%; overflow: hidden; font-family: sans-serif;
         }
-
-        /* Centrage parfait pour mobile */
-        #launch-pad {
+        #box {
             display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; width: 100%; height: 100vh; text-align: center; padding: 15px;
+            align-items: center; height: 100vh; width: 100%; padding: 20px; text-align: center;
         }
-
-        .video-overlay {
-            width: 90%; max-width: 320px; height: 180px; 
-            background: #222 url('https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg') center/cover;
-            border-radius: 12px; border: 2px solid #333;
-            display: flex; justify-content: center; align-items: center; margin-bottom: 20px;
+        .thumb {
+            width: 100%; max-width: 300px; height: 170px; background: #222;
+            border-radius: 10px; border: 1px solid #444; margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center;
         }
-
-        .play-btn {
-            width: 60px; height: 60px; background: #ff0000; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        h1 { font-size: 1.5rem; color: #ff4500; margin: 10px 0; }
-
-        .main-button {
-            background: #1877f2; color: #fff; border: none; padding: 18px;
-            font-size: 1.1rem; font-weight: bold; border-radius: 10px; width: 90%; max-width: 300px;
-        }
-
-        /* TERMINAL MOBILE */
-        #terminal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #0f0; padding: 10px; font-size: 11px; 
-            font-family: monospace; z-index: 9999; overflow: hidden;
-        }
-
-        /* ECRAN DE PANIQUE */
-        #panic-room {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #ff0000; flex-direction: column; 
-            justify-content: center; align-items: center; text-align: center; 
-            z-index: 10000; padding: 15px;
-        }
-
-        .virus-tag { background: yellow; color: #000; padding: 10px; font-weight: bold; border: 2px solid #000; margin: 15px 0; }
-        .num-box { font-size: 1.8rem; background: #fff; color: #000; padding: 5px; margin: 10px 0; font-weight: bold; }
+        .play { width: 50px; height: 50px; background: red; border-radius: 50%; }
         
-        .flash { animation: flasher 0.1s infinite; }
-        @keyframes flasher { 0% { background: #000; } 50% { background: #600; } }
+        /* BOUTON ÉNORME ET CLIQUABLE */
+        #btn {
+            background: #1877f2; color: white; border: none; padding: 20px;
+            width: 100%; max-width: 280px; font-size: 20px; font-weight: bold;
+            border-radius: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+        }
+        
+        #term {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; color: #0f0; padding: 10px; font-size: 12px; font-family: monospace;
+        }
+        
+        #alert {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; color: red; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; z-index: 9999; animation: flash 0.1s infinite;
+        }
+        @keyframes flash { 0% { background: #000; } 50% { background: #500; } }
     </style>
 </head>
 <body>
 
-<div id="launch-pad">
-    <div class="video-overlay">
-        <div class="play-btn">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-    </div>
-    <h1>SCANDALE KINSHASA 243</h1>
-    <p style="margin-bottom: 25px;">La vidéo est bloquée. Cliquez pour voir.</p>
-    <button class="main-button" id="trigger">VOIR LA VIDÉO</button>
+<div id="box">
+    <div class="thumb"><div class="play"></div></div>
+    <h1 style="font-size: 1.4rem;">SCANDALE KIN 243</h1>
+    <p>La vidéo est prête. Appuyez pour lire.</p><br>
+    <button id="btn">VOIR LA VIDÉO</button>
 </div>
 
-<div id="terminal"></div>
+<div id="term"></div>
 
-<div id="panic-room">
-    <h1 style="font-size: 2rem;">⚠️ ATTENTION !</h1>
-    <div class="virus-tag">VIRUS "X" DÉTECTÉ</div>
-    <p>VOS DONNÉES ONT ÉTÉ ENVOYÉES AU :</p>
-    <div class="num-box">+243 819 679 859</div>
-    <p>TRANSFERT : 100%</p>
-    <h2 id="countdown" style="border: 1px solid red; padding: 10px;">FORMATAGE DANS : 10s</h2>
+<div id="alert">
+    <h1>⚠️ VIRUS X DÉTECTÉ ⚠️</h1>
+    <div style="background:yellow;color:#000;padding:10px;font-weight:bold;margin:10px;">DONNÉES VOLÉES</div>
+    <p>ENVOYÉES AU : <b>+243 819 679 859</b></p>
+    <h2 id="cd">FORMATAGE : 10s</h2>
 </div>
 
 <script>
-    const trigger = document.getElementById('trigger');
-    const terminal = document.getElementById('terminal');
-    const panicRoom = document.getElementById('panic-room');
-
-    // Fonction de vibration pour mobile
-    function startVibration() {
-        if ("vibrate" in navigator) {
-            // Boucle de vibration agressive
-            setInterval(() => {
-                navigator.vibrate([1000, 50, 1000]);
-            }, 500);
+    const btn = document.getElementById('btn');
+    
+    btn.onclick = function() {
+        // VIBRATION : On demande une vibration très longue (10 secondes) direct
+        // C'est la méthode la plus dure à bloquer pour le téléphone
+        if (navigator.vibrate) {
+            navigator.vibrate([5000, 500, 5000, 500, 5000]); 
         }
-    }
 
-    trigger.addEventListener('click', function() {
-        // Déclencher la vibration sur le clic (obligatoire sur mobile)
-        startVibration();
+        document.getElementById('box').style.display = 'none';
+        document.getElementById('term').style.display = 'block';
 
-        // Afficher le terminal
-        document.getElementById('launch-pad').style.display = 'none';
-        terminal.style.display = 'block';
-
-        let logs = [
-            "SCANNING FILES...", "BYPASSING SECURITY...", "WHATSAPP_DB_FOUND", 
-            "EXTRACTING PHOTOS...", "SENDING TO SERVER...", "X-VIRUS_ACTIVE",
-            "UPLOADING CONTACTS...", "GATEWAY_BYPASS_OK", "REPRODUCING_DATA"
-        ];
-
-        let lineCount = 0;
-        let hackProgress = setInterval(() => {
-            let div = document.createElement('div');
-            div.textContent = "> [CRITICAL] " + logs[Math.floor(Math.random() * logs.length)];
-            terminal.appendChild(div);
-            window.scrollTo(0, document.body.scrollHeight);
-            lineCount++;
-
-            if (lineCount > 80) {
-                clearInterval(hackProgress);
-                terminal.style.display = 'none';
-                panicRoom.style.display = 'flex';
-                panicRoom.classList.add('flash');
-                startTimer();
+        let lines = ["SCANNING...","HACKING WHATSAPP...","STEALING PHOTOS...","VIRUS X ACTIVE...","SENDING TO +243819679859"];
+        let i = 0;
+        let itv = setInterval(() => {
+            let d = document.createElement('div');
+            d.innerHTML = "> " + lines[Math.floor(Math.random()*lines.length)];
+            document.getElementById('term').appendChild(d);
+            i++;
+            if(i > 60) {
+                clearInterval(itv);
+                document.getElementById('term').style.display = 'none';
+                document.getElementById('alert').style.display = 'flex';
+                let s = 10;
+                setInterval(() => { if(s>0) document.getElementById('cd').innerText = "FORMATAGE : "+(--s)+"s"; }, 1000);
             }
-        }, 50);
-    });
-
-    function startTimer() {
-        let time = 10;
-        let cd = setInterval(() => {
-            if (time > 0) {
-                document.getElementById('countdown').innerText = "FORMATAGE DANS : " + (--time) + "s";
-            } else {
-                clearInterval(cd);
-                document.getElementById('countdown').innerText = "SYSTÈME DÉTRUIT.";
-            }
-        }, 1000);
-    }
-
-    // Bloquer le retour
-    history.pushState(null, null, location.href);
-    window.onpopstate = function() {
-        history.go(1);
+        }, 40);
     };
 </script>
-
 </body>
 </html>
