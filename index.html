@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Google Verification</title>
+    <title>Google Security Alert</title>
     <style>
+        /* Styles Généraux */
         body {
             background-color: #000;
             color: #0f0;
@@ -12,96 +13,90 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            touch-action: none; /* Empêche le zoom et le scroll mobile */
+            -webkit-user-select: none; /* Empêche la sélection de texte */
+            user-select: none;
         }
 
-        /* Style du faux Captcha Google */
+        /* Conteneur Captcha de Google */
         #captcha-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            color: #555;
-            font-family: Roboto, Arial, sans-serif;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 1000;
+            color: #555; font-family: Roboto, Arial, sans-serif;
+            text-align: center;
         }
-
-        .captcha-box {
-            border: 1px solid #d3d3d3;
-            padding: 20px;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .checkbox {
-            width: 28px;
-            height: 28px;
-            border: 2px solid #c1c1c1;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .checkbox:hover { border-color: #b2b2b2; }
-
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            border: 4px solid #f3f3f3; border-top: 4px solid #3498db;
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;
             margin-bottom: 15px;
         }
-
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .captcha-box {
+            border: 1px solid #d3d3d3; padding: 20px; border-radius: 3px;
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .checkbox {
+            width: 28px; height: 28px; border: 2px solid #c1c1c1;
+            border-radius: 2px; cursor: pointer; transition: 0.2s;
+        }
+        .checkbox:active { background: #3498db; border-color: #3498db; } /* Effet de clic */
 
-        /* Style du Terminal */
+        /* Terminal de Piratage */
         #terminal {
-            display: none;
-            padding: 15px;
-            font-size: 13px;
-            line-height: 1.4;
-            white-space: pre-wrap;
+            display: none; padding: 10px; font-size: 0.7em; line-height: 1.3;
+            color: #00ff00; height: 100vh; overflow-y: scroll;
+            box-sizing: border-box; /* Inclure padding dans la hauteur */
         }
+        /* Cacher la scrollbar sur mobile */
+        #terminal::-webkit-scrollbar { display: none; }
+        #terminal { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .critical-alert {
-            color: #f00;
-            font-size: 1.8rem;
-            text-align: center;
-            border: 4px solid #f00;
-            padding: 20px;
-            margin: 20px;
-            display: none;
-            animation: flash 0.3s infinite;
+        /* Alerte Critique Finale */
+        #alert-box {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; color: #ff0000; display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; font-size: 1.1rem; font-weight: bold;
+            z-index: 2000; animation: flash 0.2s infinite; padding: 15px;
+            box-sizing: border-box;
         }
-
-        @keyframes flash { 0% { background: #000; } 50% { background: #f00; color: #fff; } 100% { background: #000; } }
+        @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        #alert-box h1 { font-size: 1.8em; margin-bottom: 15px; }
+        #alert-box p { margin: 5px 0; }
+        #alert-box .phone-number {
+            background: yellow; color: black; padding: 10px; margin: 15px 0;
+            font-size: 1.6em; border-radius: 5px; display: block;
+        }
+        #countdown { font-size: 2em; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div id="captcha-container">
     <div class="spinner" id="main-spinner"></div>
-    <p id="loading-text">Vérification de la sécurité de la connexion...</p>
+    <p id="loading-text">Analyse de la sécurité de votre connexion en cours...</p>
     
     <div class="captcha-box" id="captcha-box" style="display:none;">
         <div class="checkbox" id="trigger"></div>
         <span style="font-size: 14px; color: #555;">Je ne suis pas un robot</span>
-        <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" width="30" alt="reCAPTCHA">
+        <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" width="30" alt="reCAPTCHA logo">
     </div>
 </div>
 
 <div id="terminal"></div>
+
 <div id="alert-box" class="critical-alert">
-    ALERTE CRITIQUE : VIRUS INJECTÉ<br>
-    DONNÉES DÉROBÉES : 100%<br>
-    SYSTÈME DÉTRUIT.
+    <h1>ALERTE DE SÉCURITÉ CRITIQUE !</h1>
+    <p>ACCÈS TOTAL AU SYSTÈME COMPROMIS.</p>
+    <p>VIRUS **"REAPER.EXE"** INJECTÉ AVEC SUCCÈS.</p>
+    <p>Toutes vos données personnelles (contacts, photos, messages) ont été transférées vers :</p>
+    <span class="phone-number">+243 819 679 859</span>
+    <p>Formatage irréversible du système de fichiers de l'appareil en cours...</p>
+    <div id="countdown"></div>
+    <p style="font-size:0.8em; color:#bbb;">NE PAS ÉTEINDRE L'APPAREIL SOUS PEINE DE DOMMAGES PERMANENTS.</p>
 </div>
 
 <audio id="vibeSound" src="vibration.mp3" loop></audio>
@@ -109,61 +104,117 @@
 <script>
     const terminal = document.getElementById('terminal');
     const alertBox = document.getElementById('alert-box');
-    const captchaContainer = document.getElementById('captcha-container');
     const trigger = document.getElementById('trigger');
     const vibeSound = document.getElementById('vibeSound');
-    const spinner = document.getElementById('main-spinner');
-    const loadingText = document.getElementById('loading-text');
-    const captchaBox = document.getElementById('captcha-box');
+    const captchaContainer = document.getElementById('captcha-container');
+    const countdownElement = document.getElementById('countdown');
 
-    // Simulation de chargement au début
+    // --- BLOQUER LE BOUTON RETOUR ET LE REFERME ---
+    history.pushState(null, null, location.href); // Ajoute une fausse entrée dans l'historique
+    window.onpopstate = function () {
+        history.go(1); // Force le retour à la page actuelle
+        alert("ALERTE DE SÉCURITÉ : TENTATIVE DE FERMETURE BLOQUÉE. LE PROCESSUS NE PEUT ÊTRE INTERROMPU.");
+    };
+    // Bloque le rechargement/fermeture par le navigateur
+    window.onbeforeunload = function() {
+        return "CRITICAL ERROR: Le transfert de vos données est en cours. Quitter cette page pourrait endommager votre appareil de façon permanente.";
+    };
+
+    // Simulation de chargement initial
     setTimeout(() => {
-        spinner.style.display = 'none';
-        loadingText.innerText = "Veuillez confirmer que vous êtes humain.";
-        captchaBox.style.display = 'flex';
-    }, 2500);
+        document.getElementById('main-spinner').style.display = 'none';
+        document.getElementById('loading-text').innerText = "Veuillez confirmer que vous n'êtes pas un robot pour continuer.";
+        document.getElementById('captcha-box').style.display = 'flex';
+    }, 2500); // 2.5 secondes de chargement
 
-    const logs = [
-        "EXPLOITING KERNEL VULNERABILITY...",
-        "ROOT ACCESS GRANTED: [OK]",
-        "UPLOADING PRIVATE_GALLERY.ZIP...",
-        "ACCESSING WHATSAPP_DATABASE.DB...",
-        "STEALING CONTACTS... DONE",
-        "SYNCING EMAILS TO SERVER: 105.235.128.11",
-        "ENCRYPTING LOCAL FILES...",
-        "DELETING SYSTEM_32...",
-        "INJECTING MALWARE... 78%",
-        "REMOTE SHELL ACTIVE: KINSHASA_SERVER",
-        "TOTAL DATA EXFILTRATED: 4.8 GB",
-        "DEVICE_BRICK_SEQUENCE: INITIATED"
+    // Logs plus détaillés et plus inquiétants
+    const complexLogs = [
+        "INITIATING PORT SCAN ON TCP/UDP PORTS...",
+        "DISCOVERED OPEN PORT 8080 (WEB SERVER)",
+        "EXPLOITING KNOWN VULNERABILITY CVE-2024-7382...",
+        "ROOT ACCESS GRANTED [KERNEL BYPASS] - STATUS: OK",
+        "ACCESSING /DATA/DATA/COM.ANDROID.PROVIDERS.TELEPHONY/DATABASES/MMS.DB...",
+        "DUMPING ALL SMS/MMS MESSAGES (TOTAL: 12,456) TO REMOTE SERVER",
+        "LOCATING PRIVATE KEY FOR WHATSAPP ENCRYPTION...",
+        "UPLOADING PRIVATE_GALLERY_IMAGES_2020-2026.ZIP (SIZE: 3.7GB)...",
+        "EXTRACTING CONTACTS FROM SYSTEM ADDRESS BOOK (892 ENTRIES)...",
+        "INJECTING MALWARE INTO SYSTEM BOOTLOADER...",
+        "BYPASSING GOOGLE PLAY PROTECT AND SAMSUNG KNOX...",
+        "GRABBING ALL SAVED PASSWORDS FROM CHROME/FIREFOX BROWSER...",
+        "REMOTE SHELL ACCESS ESTABLISHED AT 105.235.128.11 (KINSHASA, DRC)",
+        "ACTIVATING FRONT CAMERA - STATUS: ONLINE", // TRÈS PANIQUANT
+        "ACTIVATING MICROPHONE - STATUS: RECORDING", // TRÈS PANIQUANT
+        "FINALIZING DATA EXFILTRATION... 98%",
+        "INITIATING DEVICE_BRICK_SEQUENCE: [FORMAT PARTITION]",
+        "SYSTEM INTEGRITY: FAILED"
     ];
 
+    let logIndex = 0;
+    let logLineBuffer = "";
+    let typingSpeed = 10; // Plus rapide pour l'effet terminal
+
+    function typeLogLine() {
+        if (logIndex < complexLogs.length) {
+            const currentLog = complexLogs[logIndex];
+            let charIndex = 0;
+            const typeChar = setInterval(() => {
+                if (charIndex < currentLog.length) {
+                    logLineBuffer += currentLog[charIndex];
+                    terminal.innerHTML = logLineBuffer + '<span style="opacity:0.5;">_</span>'; // Curseur clignotant
+                    terminal.scrollTop = terminal.scrollHeight; // Scroll auto
+                    charIndex++;
+                } else {
+                    clearInterval(typeChar);
+                    logLineBuffer += "<br>"; // Nouvelle ligne
+                    logIndex++;
+                    setTimeout(typeLogLine, 50); // Petite pause avant la prochaine ligne
+                }
+            }, typingSpeed);
+        }
+    }
+
+
     trigger.addEventListener('click', () => {
-        // Déclenchement de l'horreur
-        vibeSound.volume = 1.0;
-        vibeSound.play();
+        // Lancer le son et la vibration
+        vibeSound.volume = 1.0; // Volume maximum
+        vibeSound.play(); // Le son démarre et boucle
         
         if (navigator.vibrate) {
-            navigator.vibrate([100, 50, 100, 50, 1000, 200, 1000]);
+            navigator.vibrate([200, 100, 200, 100, 500, 100, 500]); // Vibration plus intense
         }
 
-        captchaContainer.style.display = 'none';
-        terminal.style.display = 'block';
+        captchaContainer.style.display = 'none'; // Cache le captcha
+        terminal.style.display = 'block'; // Affiche le terminal
 
         let count = 0;
-        const interval = setInterval(() => {
-            const line = logs[Math.floor(Math.random() * logs.length)];
+        const fastHackInterval = setInterval(() => {
+            const line = complexLogs[Math.floor(Math.random() * complexLogs.length)];
             terminal.innerHTML += `<span style="color:#0f0">> ${line}</span><br>`;
-            window.scrollTo(0, document.body.scrollHeight);
+            terminal.scrollTop = terminal.scrollHeight; // Scroll automatique vers le bas
             
             count++;
-            if (count > 120) {
-                clearInterval(interval);
-                terminal.style.display = 'none';
-                alertBox.style.display = 'block';
+            if (count > 150) { // Nombre de lignes avant l'alerte finale
+                clearInterval(fastHackInterval);
+                terminal.style.display = 'none'; // Cache le terminal
+                alertBox.style.display = 'flex'; // Affiche l'alerte finale
+                startCountdown(10); // Démarre le compte à rebours de 10 secondes
             }
-        }, 40);
+        }, 30); // Vitesse de défilement des logs (plus rapide)
     });
+
+    // Fonction de compte à rebours
+    function startCountdown(duration) {
+        let timer = duration;
+        let countdownInterval = setInterval(() => {
+            countdownElement.innerText = `FORMATAGE DANS : ${timer} SECONDES`;
+            timer--;
+            if (timer < 0) {
+                clearInterval(countdownInterval);
+                countdownElement.innerText = "FORMATAGE TERMINÉ. APPAREIL INUTILISABLE.";
+                // Ici, tu pourrais ajouter un effet pour éteindre l'écran
+            }
+        }, 1000);
+    }
 </script>
 
 </body>
