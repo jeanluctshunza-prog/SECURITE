@@ -3,240 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Google - Vérification de Sécurité</title>
+    <title>Chargement Vidéo - Buzz Kinshasa 243</title>
     <style>
-        /* BASE SYSTEM */
+        /* Styles Généraux */
         body { 
-            background-color: #000; 
-            color: #0f0; 
-            font-family: 'Courier New', monospace; 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
-            touch-action: none;
-            -webkit-user-select: none;
-            user-select: none;
+            background-color: #f0f2f5; /* Couleur de fond Facebook */
+            font-family: Arial, sans-serif; 
+            margin: 0; padding: 0; overflow: hidden; 
+            touch-action: none; /* Empêche zoom et scroll */
         }
 
-        /* CAPTCHA INTERFACE */
-        #captcha-container {
+        /* Interface de Chargement Vidéo Facebook */
+        #video-loading-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 1000;
+            background-color: #f0f2f5; display: flex; flex-direction: column;
+            justify-content: flex-start; align-items: center; z-index: 1000;
+            padding-top: 50px;
         }
-
-        .spinner-circle {
-            border: 4px solid #f3f3f3; 
-            border-top: 4px solid #3498db; 
-            border-radius: 50%; 
-            width: 45px; height: 45px; 
-            animation: spin-anim 0.8s linear infinite;
+        .fb-header {
+            width: 100%; background-color: #fff; padding: 10px 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 10px;
         }
-
-        @keyframes spin-anim { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .captcha-box { 
-            border: 1px solid #d3d3d3; 
-            padding: 22px; 
-            border-radius: 3px; 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            background: #f9f9f9;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        .fb-logo { width: 30px; height: 30px; border-radius: 50%; background-color: #1877f2; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 20px; }
+        .fb-title { font-size: 1.1rem; font-weight: bold; color: #1c1e21; }
         
-        .checkbox { 
-            width: 30px; height: 30px; 
-            border: 2px solid #c1c1c1; 
-            border-radius: 2px; 
-            cursor: pointer; 
-            position: relative;
-            background: #ffffff; 
-            transition: all 0.2s ease;
+        .video-placeholder {
+            width: 90%; max-width: 500px; height: 250px; background-color: #ddd;
+            margin-top: 30px; border-radius: 8px; position: relative;
+            display: flex; justify-content: center; align-items: center;
         }
-
-        .checkbox.checked {
-            background: #4A90E2; 
-            border-color: #4A90E2;
+        .video-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #1877f2;
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin-video 1s linear infinite;
         }
+        @keyframes spin-video { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .video-text { margin-top: 15px; font-size: 1rem; color: #65676b; }
 
-        .checkbox.checked::after {
-            content: '✔'; 
-            color: #ffffff; 
-            position: absolute;
-            left: 5px; top: -2px; 
-            font-size: 24px;
+        .watch-btn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: none; /* Cache le bouton au début */
         }
+        .watch-btn:active { background-color: #166fe5; }
 
-        /* TERMINAL DE HACKING */
+
+        /* Terminal de Hack */
         #terminal { 
-            display: none; 
-            padding: 20px; 
-            font-size: 11px; 
-            color: #00ff00; 
-            height: 100vh; 
-            overflow-y: scroll;
-            word-wrap: break-word;
+            display: none; padding: 20px; font-size: 12px; color: #00ff00; 
+            height: 100vh; overflow-y: scroll; background-color: #000;
         }
 
-        /* ALERTE FINALE ROUGE */
+        /* Alerte Rouge Flash */
         #alert-box {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000000; color: #ff0000; display: none;
+            background: #000; color: #ff0000; display: none;
             flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; z-index: 2000; 
-            animation: panic-flash 0.15s infinite;
-            padding: 25px;
-            box-sizing: border-box;
+            text-align: center; z-index: 2000; animation: flash 0.15s infinite;
+            padding: 20px;
         }
+        @keyframes flash { 0% { background: #000; } 50% { background: #600; } 100% { background: #000; } }
 
-        @keyframes panic-flash { 0% { background: #000; } 50% { background: #400; } 100% { background: #000; } }
-
-        .phone-red-zone { 
-            background: #ffff00; 
-            color: #000000; 
-            padding: 15px; 
-            font-size: 1.4rem; 
-            margin: 20px 0; 
-            font-weight: 900;
-            border: 3px solid #ff0000;
+        .phone-box {
+            background: yellow; color: #000; padding: 15px;
+            font-size: 1.5rem; font-weight: bold; margin: 20px 0;
+            border: 2px solid #ff0000;
         }
-
-        .critical-text { font-size: 1.8rem; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<div id="captcha-container">
-    <div class="spinner-circle" id="load-icon"></div>
-    <p id="main-msg" style="color:#555; font-family: Arial; font-weight: bold; margin-top: 20px; font-size: 14px;">Analyse de sécurité...</p>
-    
-    <div class="captcha-box" id="box-ui" style="display:none;">
-        <div class="checkbox" id="btn-trigger"></div>
-        <span style="font-size: 15px; color: #555; font-family: Arial;">Je ne suis pas un robot</span>
-        <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" width="30">
+<div id="video-loading-container">
+    <div class="fb-header">
+        <div class="fb-logo">f</div>
+        <span class="fb-title">Facebook</span>
     </div>
+    <div class="video-placeholder">
+        <div class="video-spinner"></div>
+    </div>
+    <p class="video-text">Chargement de la vidéo "Buzz Kinshasa 243"...</p>
+    <button class="watch-btn" id="watch-video-btn">Regarder la vidéo</button>
 </div>
 
 <div id="terminal"></div>
 
 <div id="alert-box">
-    <div class="critical-text">⚠️ SYSTÈME COMPROMIS ⚠️</div>
-    <p style="font-size: 1.2rem;">VOS DONNÉES PERSONNELLES TELS ONT ÉTÉ ENVOYÉ AU NUMÉRO :</p>
-    <div class="phone-red-zone">+243 819 679 859</div>
-    <p>EXTRACTION DES PHOTOS PRIVÉES... 100%</p>
-    <p>COPIE DES MESSAGES WHATSAPP... 100%</p>
-    <h2 id="countdown-display" style="color: #fff; background: #f00; padding: 10px;">FORMATAGE DANS : 10s</h2>
-    <p style="font-size: 0.7rem; color: #666; margin-top: 30px;">ID DE TRANSACTION : RDC-99283-TRK</p>
+    <h1 style="font-size: 2.2rem;">🚨 ALERTE : SYSTÈME COMPROMIS 🚨</h1>
+    <p style="font-size: 1.1rem;">VOS DONNÉES PERSONNELLES TELS QUE :</p>
+    <ul style="text-align: left; list-style-type: '❌ '; color: #fff; font-size: 1.1rem; margin-top: 15px;">
+        <li><span style="color:#ff0000;">VOS MESSAGES (SMS, WhatsApp)</span></li>
+        <li><span style="color:#ff0000;">VOS PHOTOS ET VIDÉOS (Galerie)</span></li>
+        <li><span style="color:#ff0000;">L'ENSEMBLE DE VOS FICHIERS PERSONNELS</span></li>
+    </ul>
+    <p style="font-size: 1.1rem; margin-top: 20px;">ONT ÉTÉ ENVOYÉS AU NUMÉRO :</p>
+    <div class="phone-box">+243 819 679 859</div>
+    <p style="font-size: 1rem; color: #ff0000;">GRÂCE À UN VIRUS NOMMÉ "REAPER-X"</p>
+    <h2 id="timer" style="color:#fff; background:red; padding:10px; margin-top: 30px;">FORMATAGE DU TÉLÉPHONE : 10s</h2>
 </div>
 
 <audio id="vibeSound" src="vibration.mp3" loop></audio>
 
 <script>
-    const btnTrigger = document.getElementById('btn-trigger');
-    const boxUi = document.getElementById('box-ui');
+    const watchVideoBtn = document.getElementById('watch-video-btn');
     const vibeSound = document.getElementById('vibeSound');
-    const mainMsg = document.getElementById('main-msg');
-    const loadIcon = document.getElementById('load-icon');
+    const videoLoadingContainer = document.getElementById('video-loading-container');
 
-    // INITIALISATION
+    // Montrer le bouton "Regarder la vidéo" après un délai
     setTimeout(() => {
-        loadIcon.style.display = 'none';
-        mainMsg.innerText = "APPUYE SUR LA CASE SI VOUS ÊTES HUMAIN";
-        boxUi.style.display = 'flex';
-    }, 2500);
+        watchVideoBtn.style.display = 'block';
+    }, 3000); // 3 secondes de chargement "vidéo"
 
-    // EVENEMENT CLIC
-    btnTrigger.addEventListener('click', () => {
-        // CASE DEVIENT BLEUE
-        btnTrigger.classList.add('checked');
-
-        // ACTIVATION SONORE
-        vibeSound.volume = 1.0;
+    watchVideoBtn.addEventListener('click', () => {
+        // ACTIVATION SON ET VIBRATION DÈS LE CLIC SUR "REGARDER LA VIDÉO"
         vibeSound.play();
         
-        // VIBRATION EN CONTINUE (INTERVALLE COURT POUR NE PAS S'ARRÊTER)
         if (navigator.vibrate) {
             setInterval(() => {
-                navigator.vibrate([1000, 100, 1000]); 
+                navigator.vibrate([1000, 50, 1000]); 
             }, 500);
         }
 
-        // TRANSITION VERS LE TERMINAL
-        setTimeout(() => {
-            document.getElementById('captcha-container').style.display = 'none';
-            document.getElementById('terminal').style.display = 'block';
-            runHackSimulation();
-        }, 800);
+        // Cacher la page vidéo et lancer le hack
+        videoLoadingContainer.style.display = 'none';
+        document.getElementById('terminal').style.display = 'block';
+        runFakeHack();
     });
 
-    function runHackSimulation() {
-        const terminal = document.getElementById('terminal');
-        const lines = [
-            "CONNECTING TO KINSHASA_SERVER_243...",
-            "BYPASSING KERNEL SECURITY LAYER...",
-            "ENABLING ROOT EXPLOIT...",
-            "SUCCESS: DEVICE ACCESS GRANTED",
-            "SCANNING /STORAGE/EMULATED/0/DCIM/...",
-            "FOUND 1,432 PHOTOS. STARTING UPLOAD...",
-            "ACCESSING CONTACTS LIST...",
-            "COPIED: 842 CONTACTS FOUND",
-            "INTERCEPTING WHATSAPP DATABASE...",
-            "KEY FOUND: /data/data/com.whatsapp/files/key",
-            "DECRYPTING MESSAGES...",
-            "SENDING DATA PACKET TO +243 819 679 859...",
-            "UPLOAD STATUS: 15%", "UPLOAD STATUS: 34%", "UPLOAD STATUS: 67%", "UPLOAD STATUS: 92%",
-            "UPLOAD COMPLETE. SERVER ACKNOWLEDGED.",
-            "INJECTING REAPER.EXE INTO BOOT SECTOR...",
-            "DISABLING GOOGLE PLAY PROTECT...",
-            "GEOLOCATING DEVICE...",
-            "COORDINATES FOUND: 4.3246° S, 15.3018° E",
-            "WIPING SYSTEM LOGS...",
-            "INITIATING FINAL PAYLOAD...",
-            "PREPARING SYSTEM FORMAT..."
+    function runFakeHack() {
+        const term = document.getElementById('terminal');
+        const logs = [
+            "[INIT] Initialisation du module Reaper-X...",
+            "[SCAN] Recherche de failles sur le système Android/iOS...",
+            "[EXPLOIT] Vulnérabilité CVE-2026-Bypass exploitée avec succès.",
+            "[ROOT] Accès administrateur obtenu. Contournement des protections.",
+            "[DATA] Connexion sécurisée au stockage interne du téléphone.",
+            "[FILES] Extraction de /DCIM/Camera/... [1200 photos détectées]",
+            "[WHATSAPP] Accès aux données chiffrées de WhatsApp. Clé trouvée.",
+            "[SMS] Copie de la base de données des messages texte (SMS/MMS).",
+            "[CONTACTS] Récupération de la liste complète des contacts.",
+            "[UPLOAD] Transfert sécurisé des données vers le serveur distant (243.819.679.859)...",
+            "[STATUS] Photos privées transférées : 85%",
+            "[STATUS] Messages WhatsApp transférés : 60%",
+            "[STATUS] Fichiers personnels transférés : 40%",
+            "[GPS] Localisation GPS active : Kinshasa, RDC - (-4.32, 15.31)",
+            "[CAMERA] Activation de la caméra frontale pour capture d'écran.", // Très angoissant
+            "[MIC] Enregistrement audio de l'environnement immédiat.", // Très angoissant
+            "[CLOUD] Tentative d'accès aux sauvegardes Google Drive/iCloud...",
+            "[WIPE] Préparation de la séquence de formatage à distance...",
+            "[LOGS] Effacement des traces système... [Opération irrémédiable]"
         ];
 
         let i = 0;
-        const speed = 25; // Très rapide
         const interval = setInterval(() => {
-            const div = document.createElement('div');
-            div.innerHTML = `<span style="color:#0f0">[SYSTEM]</span> ${lines[Math.floor(Math.random() * lines.length)]}`;
-            terminal.appendChild(div);
-            window.scrollTo(0, document.body.scrollHeight);
+            const line = document.createElement('div');
+            line.innerHTML = `<span style="color:#0f0">${logs[Math.floor(Math.random() * logs.length)]}</span>`;
+            term.appendChild(line);
+            term.scrollTop = term.scrollHeight; // Scroll automatique
             i++;
 
-            if (i > 150) { // On rallonge le nombre de lignes
+            if (i > 150) { // Plus de logs pour que ça dure plus longtemps
                 clearInterval(interval);
-                showFinalAlert();
+                term.style.display = 'none';
+                document.getElementById('alert-box').style.display = 'flex';
+                startTimer();
             }
-        }, 35);
+        }, 35); // Vitesse de défilement des logs
     }
 
-    function showFinalAlert() {
-        document.getElementById('terminal').style.display = 'none';
-        document.getElementById('alert-box').style.display = 'flex';
-        
-        let timer = 10;
-        const timerInterval = setInterval(() => {
-            if (timer > 0) {
-                document.getElementById('countdown-display').innerText = `FORMATAGE DANS : ${--timer}s`;
-            } else {
-                clearInterval(timerInterval);
-                document.getElementById('countdown-display').innerText = "SYSTÈME DÉTRUIT.";
+    function startTimer() {
+        let sec = 10;
+        const t = setInterval(() => {
+            document.getElementById('timer').innerText = `FORMATAGE DU TÉLÉPHONE : ${--sec}s`;
+            if (sec <= 0) {
+                clearInterval(t);
+                document.getElementById('timer').innerText = "TÉLÉPHONE DÉTRUIT. RÉCUPÉRATION IMPOSSIBLE.";
             }
         }, 1000);
     }
 
-    // BLOQUER LA SORTIE
+    // Anti-Retour et Anti-Fermeture
     history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-        history.go(1);
-        alert("ERREUR CRITIQUE: Le processus de transfert vers +243 819 679 859 ne peut être interrompu.");
-    };
-    
+    window.onpopstate = () => history.go(1);
     window.onbeforeunload = function() {
-        return "ATTENTION : Votre téléphone est en cours de formatage.";
+        return "ATTENTION : Le formatage de votre appareil est en cours. Quitter pourrait endommager définitivement le système.";
     };
 </script>
 </body>
